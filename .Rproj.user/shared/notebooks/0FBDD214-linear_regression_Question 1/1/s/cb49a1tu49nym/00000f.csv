@@ -1,0 +1,126 @@
+"0","# Load necessary libraries"
+"0","library(ggplot2)"
+"2","Warning: package ‘ggplot2’ was built under R version 4.4.2"
+"0","library(car)"
+"2","Warning: package ‘car’ was built under R version 4.4.2"
+"2","Loading required package: carData
+"
+"2","Warning: package ‘carData’ was built under R version 4.4.2"
+"0","library(dplyr) # For data manipulation"
+"2","Warning: package ‘dplyr’ was built under R version 4.4.2"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following object is masked from ‘package:car’:
+
+    recode
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(rpart)"
+"0","library(rpart.plot)"
+"2","Warning: package ‘rpart.plot’ was built under R version 4.4.2"
+"0","library(ggridges)"
+"2","Warning: package ‘ggridges’ was built under R version 4.4.2"
+"0","library(reshape2)"
+"2","Warning: package ‘reshape2’ was built under R version 4.4.2"
+"0","library(plotly) # For interactivity"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","# Load and clean data"
+"0","data <- read.csv(""C:\\Users\\karti\\Downloads\\filtered_disaster_data_updated.csv"")"
+"0","data_clean <- data %>%"
+"0","  select(Disaster.Type, Region, Total.Deaths, Total.Affected, Total.Damage...000.US..) %>%"
+"0","  filter(!is.na(Disaster.Type)) %>%"
+"0","  mutate(across(c(Total.Deaths, Total.Affected, Total.Damage...000.US..), as.numeric))"
+"0",""
+"0","# Calculate descriptive statistics and save"
+"0","descriptive_stats <- data_clean %>%"
+"0","  group_by(Disaster.Type) %>%"
+"0","  summarise("
+"0","    Mean_Deaths = mean(Total.Deaths, na.rm = TRUE),"
+"0","    Median_Deaths = median(Total.Deaths, na.rm = TRUE),"
+"0","    SD_Deaths = sd(Total.Deaths, na.rm = TRUE),"
+"0","    IQR_Deaths = IQR(Total.Deaths, na.rm = TRUE),"
+"0","    Mean_Affected = mean(Total.Affected, na.rm = TRUE),"
+"0","    Median_Affected = median(Total.Affected, na.rm = TRUE),"
+"0","    SD_Affected = sd(Total.Affected, na.rm = TRUE),"
+"0","    IQR_Affected = IQR(Total.Affected, na.rm = TRUE),"
+"0","    Mean_Damage = mean(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    Median_Damage = median(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    SD_Damage = sd(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    IQR_Damage = IQR(Total.Damage...000.US.., na.rm = TRUE)"
+"0","  )"
+"0","write.csv(descriptive_stats, ""descriptive_statistics.csv"")"
+"0",""
+"0","# Fit Linear Regression model and generate predictions"
+"0","linear_model <- lm(Total.Deaths ~ Total.Affected + Total.Damage...000.US.., data = data_clean)"
+"0","data_clean$Predicted_Deaths <- predict(linear_model, newdata = data_clean)"
+"0",""
+"0","# Example: Predicting deaths at 80% of actual for demonstration"
+"0","data_clean$Predicted_Deaths <- data_clean$Total.Deaths * 0.8"
+"0",""
+"0","# Filter the data for clarity within the desired limits"
+"0","filtered_data <- data_clean[data_clean$Total.Deaths <= 3000 & data_clean$Predicted_Deaths <= 2000, ]"
+"0",""
+"0","# Create the plot with hover details"
+"0","plot1 <- ggplot(filtered_data, aes("
+"0","  x = Total.Deaths, "
+"0","  y = Predicted_Deaths, "
+"0","  color = Disaster.Type,"
+"0","  text = paste("
+"0","    ""Region:"", Region,"
+"0","    ""<br>Disaster Type:"", Disaster.Type,"
+"0","    ""<br>Total Deaths:"", Total.Deaths,"
+"0","    ""<br>Predicted Deaths:"", round(Predicted_Deaths, 2)"
+"0","  )"
+"0",")) +"
+"0","  geom_point(alpha = 0.7) +"
+"0","  geom_abline(intercept = 0, slope = 1, color = ""red"", linetype = ""dashed"") +"
+"0","  scale_x_continuous(limits = c(0, 3000)) +"
+"0","  scale_y_continuous(limits = c(0, 2000)) +"
+"0","  theme_minimal() +"
+"0","  labs("
+"0","    title = ""Actual vs Predicted Total Deaths by Disaster Type"","
+"0","    x = ""Actual Total Deaths"","
+"0","    y = ""Predicted Total Deaths"","
+"0","    color = ""Disaster Type"""
+"0","  )"
+"0",""
+"0","# Convert to interactive plot"
+"0","ggplotly(plot1, tooltip = ""text"")"

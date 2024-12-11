@@ -1,0 +1,89 @@
+"0","# Load necessary libraries"
+"0","library(ggplot2)"
+"2","Warning: package ‘ggplot2’ was built under R version 4.4.2"
+"0","library(car)"
+"2","Warning: package ‘car’ was built under R version 4.4.2"
+"2","Loading required package: carData
+"
+"2","Warning: package ‘carData’ was built under R version 4.4.2"
+"0","library(dplyr) # For data manipulation"
+"2","Warning: package ‘dplyr’ was built under R version 4.4.2"
+"2","
+Attaching package: ‘dplyr’
+
+"
+"2","The following object is masked from ‘package:car’:
+
+    recode
+
+"
+"2","The following objects are masked from ‘package:stats’:
+
+    filter, lag
+
+"
+"2","The following objects are masked from ‘package:base’:
+
+    intersect, setdiff, setequal, union
+
+"
+"0","library(rpart)"
+"0","library(rpart.plot)"
+"2","Warning: package ‘rpart.plot’ was built under R version 4.4.2"
+"0","library(ggridges)"
+"2","Warning: package ‘ggridges’ was built under R version 4.4.2"
+"0","library(reshape2)"
+"2","Warning: package ‘reshape2’ was built under R version 4.4.2"
+"0","library(plotly) # For interactivity"
+"2","Registered S3 method overwritten by 'data.table':
+  method           from
+  print.data.table     
+"
+"2","Registered S3 method overwritten by 'htmlwidgets':
+  method           from         
+  print.htmlwidget tools:rstudio
+"
+"2","
+Attaching package: ‘plotly’
+
+"
+"2","The following object is masked from ‘package:ggplot2’:
+
+    last_plot
+
+"
+"2","The following object is masked from ‘package:stats’:
+
+    filter
+
+"
+"2","The following object is masked from ‘package:graphics’:
+
+    layout
+
+"
+"0","# Load and clean data"
+"0","data <- read.csv(""C:\\Users\\karti\\Downloads\\filtered_disaster_data_updated.csv"")"
+"0","data_clean <- data %>%"
+"0","  select(Disaster.Type, Region, Total.Deaths, Total.Affected, Total.Damage...000.US..) %>%"
+"0","  filter(!is.na(Disaster.Type)) %>%"
+"0","  mutate(across(c(Total.Deaths, Total.Affected, Total.Damage...000.US..), as.numeric))"
+"0",""
+"0","# Calculate descriptive statistics and save"
+"0","descriptive_stats <- data_clean %>%"
+"0","  group_by(Disaster.Type) %>%"
+"0","  summarise("
+"0","    Mean_Deaths = mean(Total.Deaths, na.rm = TRUE),"
+"0","    Median_Deaths = median(Total.Deaths, na.rm = TRUE),"
+"0","    SD_Deaths = sd(Total.Deaths, na.rm = TRUE),"
+"0","    IQR_Deaths = IQR(Total.Deaths, na.rm = TRUE),"
+"0","    Mean_Affected = mean(Total.Affected, na.rm = TRUE),"
+"0","    Median_Affected = median(Total.Affected, na.rm = TRUE),"
+"0","    SD_Affected = sd(Total.Affected, na.rm = TRUE),"
+"0","    IQR_Affected = IQR(Total.Affected, na.rm = TRUE),"
+"0","    Mean_Damage = mean(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    Median_Damage = median(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    SD_Damage = sd(Total.Damage...000.US.., na.rm = TRUE),"
+"0","    IQR_Damage = IQR(Total.Damage...000.US.., na.rm = TRUE)"
+"0","  )"
+"0","write.csv(descriptive_stats, ""descriptive_statistics.csv"")"

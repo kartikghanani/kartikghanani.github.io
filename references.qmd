@@ -1,0 +1,34 @@
+---
+title: "References"
+---
+
+# References
+
+Below is a list of references and resources used in the DisasterLens project:
+
+------------------------------------------------------------------------
+
+## Tools and Libraries
+
+1.  **R**\
+    **Libraries:** ggplot2, plotly, dplyr, tidyr, rpart, rpart.plot, car, caret, ggridges ,reshape2.
+
+2.  **Quarto**\
+    Used for creating this website.
+
+3.  **CSS Frameworks**\
+    Custom CSS: `styles.css`
+
+------------------------------------------------------------------------
+
+## Datasets
+
+1.  **Emergency Events Database (EM-DAT)**\
+    Source: <https://www.emdat.be/>\
+    Description: Comprehensive historical data on disasters worldwide.
+
+------------------------------------------------------------------------
+
+## Acknowledgments Mentors: Dr. Isuru Dassanayake
+
+------------------------------------------------------------------------

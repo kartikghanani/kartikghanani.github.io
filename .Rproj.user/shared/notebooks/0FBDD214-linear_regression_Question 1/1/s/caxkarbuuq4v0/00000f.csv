@@ -1,0 +1,5 @@
+"0",""
+"0","# Decision Tree for Total Deaths"
+"0","decision_tree <- rpart(Total.Deaths ~ Disaster.Type + Region + Total.Affected + Total.Damage...000.US.., "
+"0","                       data = data_clean, method = ""anova"")"
+"0","rpart.plot(decision_tree, main = ""Decision Tree for Total Deaths"")"

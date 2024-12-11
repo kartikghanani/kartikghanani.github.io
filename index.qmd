@@ -1,0 +1,31 @@
+---
+title: ""
+---
+
+::: hero-section
+<h1>Welcome to DisasterLens</h1>
+
+<p>Disaster Lens leverages the extensive data from the Emergency Events Database (EM-DAT), which has documented over 26,000 mass disasters globally. By analyzing this rich dataset, we aim to assess the impacts of various disaster types on human populations and infrastructure, and to evaluate the effectiveness of response interventions across different regions and magnitudes. Our goal is to provide actionable insights that inform policies and practices, ultimately enhancing disaster preparedness and mitigating the adverse effects of future disasters.</p>
+:::
+
+# **Research Questions:**
+
+**1.Comparative Impacts of Disaster Types on Human and Infrastructure Outcomes**
+
+**2.[Effectiveness of Disaster Response Interventions]{#research-question-2}**
+
+**3. How are floods and earthquakes globally distributed, and which countries and regions are most impacted in terms of population affected and economic damage?**
+
+::: team-section
+<h2>Our Team</h2>
+
+<ul>
+
+<li><strong>Kartik Ghanani</strong></li>
+
+<li><strong>Sana Shaik</strong></li>
+
+<li><strong>Saikiran Reddy Maranganty</strong></li>
+
+</ul>
+:::

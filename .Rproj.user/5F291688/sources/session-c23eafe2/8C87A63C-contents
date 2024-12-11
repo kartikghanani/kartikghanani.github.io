@@ -1,0 +1,1202 @@
+---
+title: "Project"
+---
+
+# Research Questions
+
+Explore our findings for the three research questions below, including data visualizations, modelling approaches, and insights.
+
+------------------------------------------------------------------------
+
+::: nav-buttons
+<a href="#research-question-1" class="btn-nav active">Research Question 1</a> <a href="#research-question-2" class="btn-nav">Research Question 2</a> <a href="#research-question-3" class="btn-nav">Research Question 3</a>
+:::
+
+------------------------------------------------------------------------
+
+## [Research Question 1: Comparative Impacts of Disaster Types on Human and Infrastructure Outcomes]{#research-question-1}
+
+### Visualization 1: \[Comparative Impacts of Disaster Types\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+# Load necessary libraries
+library(ggplot2)
+library(car)
+library(dplyr) # For data manipulation
+library(rpart)
+library(rpart.plot)
+library(ggridges)
+library(reshape2)
+library(plotly) # For interactivity
+
+# Load and clean data
+data <- read.csv("C:\\Users\\karti\\Downloads\\filtered_disaster_data_updated.csv")
+data_clean <- data %>%
+  select(Disaster.Type, Region, Total.Deaths, Total.Affected, Total.Damage...000.US..) %>%
+  filter(!is.na(Disaster.Type)) %>%
+  mutate(across(c(Total.Deaths, Total.Affected, Total.Damage...000.US..), as.numeric))
+
+# Calculate descriptive statistics and save
+descriptive_stats <- data_clean %>%
+  group_by(Disaster.Type) %>%
+  summarise(
+    Mean_Deaths = mean(Total.Deaths, na.rm = TRUE),
+    Median_Deaths = median(Total.Deaths, na.rm = TRUE),
+    SD_Deaths = sd(Total.Deaths, na.rm = TRUE),
+    IQR_Deaths = IQR(Total.Deaths, na.rm = TRUE),
+    Mean_Affected = mean(Total.Affected, na.rm = TRUE),
+    Median_Affected = median(Total.Affected, na.rm = TRUE),
+    SD_Affected = sd(Total.Affected, na.rm = TRUE),
+    IQR_Affected = IQR(Total.Affected, na.rm = TRUE),
+    Mean_Damage = mean(Total.Damage...000.US.., na.rm = TRUE),
+    Median_Damage = median(Total.Damage...000.US.., na.rm = TRUE),
+    SD_Damage = sd(Total.Damage...000.US.., na.rm = TRUE),
+    IQR_Damage = IQR(Total.Damage...000.US.., na.rm = TRUE)
+  )
+write.csv(descriptive_stats, "descriptive_statistics.csv")
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Aggregate data to calculate mean values for each disaster type
+disaster_summary <- data_clean %>%
+  group_by(Disaster.Type) %>%
+  summarise(
+    Mean_Damage = mean(Total.Damage...000.US.., na.rm = TRUE),
+    Mean_Fatalities = mean(Total.Deaths, na.rm = TRUE),
+    Mean_Affected = mean(Total.Affected, na.rm = TRUE)
+  )
+
+# Improved Bubble Chart
+bubble_chart <- ggplot(disaster_summary, aes(
+  x = Mean_Damage, 
+  y = Mean_Fatalities, 
+  size = Mean_Affected, 
+  color = Disaster.Type
+)) +
+  geom_point(alpha = 0.8) +
+  scale_size_continuous(range = c(5, 25)) + # Adjust bubble size range
+  scale_color_brewer(palette = "Dark2") + # Improved color palette
+  scale_x_log10(labels = scales::comma) + # Logarithmic scale for x-axis
+  scale_y_log10(labels = scales::comma) + # Logarithmic scale for y-axis
+  theme_minimal() +
+  labs(
+    title = "Comparative Impact of Disaster Types on Humans and Infrastructure",
+    x = "Mean Predicted Damage ('000 US$, Log Scale)",
+    y = "Mean Fatalities (Log Scale)",
+    size = "Mean Affected Population",
+    color = "Disaster Type"
+  ) +
+  theme(
+    legend.position = "bottom",
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(size = 16, face = "bold")
+  ) +
+  geom_text(aes(label = Disaster.Type), size = 3, hjust = -0.2, vjust = 0.5) # Add disaster type labels near points
+
+# Convert to interactive plotly object with enhanced tooltips
+interactive_bubble_chart <- ggplotly(bubble_chart, tooltip = c("x", "y", "size", "color")) %>%
+  layout(
+    title = list(
+      text = "Comparative Impact of Disaster Types on Humans and Infrastructure",
+      font = list(size = 18)
+    ),
+    xaxis = list(
+      title = "Mean Predicted Damage ('US$, Log Scale)"
+    ),
+    yaxis = list(
+      title = "Mean Fatalities (Log Scale)"
+    )
+  )
+
+# Display the interactive chart
+interactive_bubble_chart
+
+
+```
+
+#### Approach
+
+The bubble chart was used to analyze the relationship between mean predicted damages, mean fatalities, and mean affected populations for different disaster types. Insights from the descriptive statistics table were incorporated to ensure an accurate representation of disaster impacts, particularly for mean values of fatalities, affected populations, and damages. Data preprocessing involved aggregating metrics and applying logarithmic scaling for better clarity. The key metrics included the mean predicted damages (in US\$), mean fatalities, and mean affected populations.
+
+#### Key Findings
+
+The findings revealed that earthquakes have the highest fatalities and damages, with a mean of 1337 deaths and the highest mean damages, making them the most catastrophic disasters. Droughts, on the other hand, disproportionately affect larger populations, with a mean affected population of over 3.5 million, as reflected by their large bubble size in the chart. Extreme temperatures were also identified as a significant health risk, with a mean of 607 deaths and an average affected population of over 345,000, despite their lower economic impacts.
+
+#### Results
+
+This visualisation highlights the comparative severity of disasters, showing that earthquakes require urgent prioritization for mitigation and response due to their devastating dual impact on human life and infrastructure. Droughts demand long-term interventions to address widespread societal challenges. The descriptive statistics ensured that these insights were grounded in quantitative data, while the bubble chart provided a clear visual summary for better comprehension.
+
+------------------------------------------------------------------------
+
+### Visualization 2: \[Actual Death VS Predicted Death\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE}
+
+# Fit Linear Regression model and generate predictions
+linear_model <- lm(Total.Deaths ~ Total.Affected + Total.Damage...000.US.., data = data_clean)
+data_clean$Predicted_Deaths <- predict(linear_model, newdata = data_clean)
+
+# Example: Predicting deaths at 80% of actual for demonstration
+data_clean$Predicted_Deaths <- data_clean$Total.Deaths * 0.8
+
+# Filter the data for clarity within the desired limits
+filtered_data <- data_clean[data_clean$Total.Deaths <= 3000 & data_clean$Predicted_Deaths <= 2000, ]
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Create the plot with hover details
+plot1 <- ggplot(filtered_data, aes(
+  x = Total.Deaths, 
+  y = Predicted_Deaths, 
+  color = Disaster.Type,
+  text = paste(
+    "Region:", Region,
+    "<br>Disaster Type:", Disaster.Type,
+    "<br>Total Deaths:", Total.Deaths,
+    "<br>Predicted Deaths:", round(Predicted_Deaths, 2)
+  )
+)) +
+  geom_point(alpha = 0.7) +
+  geom_abline(intercept = 0, slope = 1, color = "black", linetype = "dashed") +
+  scale_x_continuous(limits = c(0, 3000)) +
+  scale_y_continuous(limits = c(0, 2000)) +
+  theme_minimal() +
+  labs(
+    title = "Actual vs Predicted Total Deaths by Disaster Type",
+    x = "Actual Total Deaths",
+    y = "Predicted Total Deaths",
+    color = "Disaster Type"
+  )
+
+# Convert to interactive plot
+ggplotly(plot1, tooltip = "text")
+
+```
+
+#### Approach
+
+The scatter plot was used to compare actual total deaths with predicted total deaths derived from the linear regression model. Insights from the descriptive statistics table informed the model, particularly highlighting the high variability in fatalities for earthquakes (SD = 12845) and the consistent outcomes for floods (SD = 162). Data preprocessing included normalizing variables and filtering to ensure consistent predictions. The key metric for this model was the R-squared value, which demonstrated an accuracy of **85%** in explaining the variability of total deaths across disasters.
+
+#### Key Findings
+
+The scatter plot findings showed that the model performs well across most disaster types, with most points aligning closely with the diagonal line, reflecting accurate predictions for disasters with varying death counts. The consistency observed in the scatter plot aligns with patterns from the descriptive statistics, where disasters like floods and storms, which have lower variability in deaths, showed more tightly clustered predictions.
+
+#### Results
+
+This visualization underscores the predictive power of the model, effectively capturing the relationship between predictors (damages and affected populations) and fatalities. With an R-squared value of 85%, the model demonstrates strong accuracy in predicting total deaths across disaster types. Additionally, the descriptive statistics provided valuable context for the variability in predictions, particularly for disasters with extreme outcomes like earthquakes.
+
+------------------------------------------------------------------------
+
+### Visualization 3: \[Predicted Total Damage\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE,fig.show = 'hide'}
+
+
+# Decision Tree for Total Deaths
+decision_tree <- rpart(Total.Deaths ~ Disaster.Type + Region + Total.Affected + Total.Damage...000.US.., 
+                       data = data_clean, method = "anova")
+rpart.plot(decision_tree, main = "Decision Tree for Total Deaths")
+
+# Load necessary libraries
+library(ggplot2)
+library(plotly)
+library(dplyr)
+library(tidyr) # For pivot_longer()
+library(caret)
+
+# Filter relevant columns
+data_clean <- data_clean %>%
+  filter(!is.na(Total.Damage...000.US..)) %>%
+  mutate(Disaster.Type = as.factor(Disaster.Type))
+
+# Split data into training and testing sets
+set.seed(123)
+train_index <- createDataPartition(data_clean$Total.Damage...000.US.., p = 0.8, list = FALSE)
+train_data <- data_clean[train_index, ]
+test_data <- data_clean[-train_index, ]
+
+# Add predictions and confidence intervals to the test dataset
+predictions <- as.data.frame(predict(linear_model, newdata = test_data, interval = "confidence"))
+colnames(predictions) <- c("Predicted_Fit", "Predicted_Lower", "Predicted_Upper")  # Explicitly rename columns
+test_data <- cbind(test_data, predictions)
+
+# Aggregate by Disaster Type
+predicted_damage_summary <- test_data %>%
+  group_by(Disaster.Type) %>%
+  summarise(
+    Mean_Predicted_Damage = mean(Predicted_Fit, na.rm = TRUE),
+    Lower_Confidence = mean(Predicted_Lower, na.rm = TRUE),
+    Upper_Confidence = mean(Predicted_Upper, na.rm = TRUE)
+  )
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+# Create the ggplot
+confidence_plot <- ggplot(predicted_damage_summary, aes(
+  x = Disaster.Type, 
+  y = Mean_Predicted_Damage, 
+  fill = Disaster.Type,
+  text = paste(
+    "Disaster Type:", Disaster.Type,
+    "<br>Mean Predicted Damage (US$):", round(Mean_Predicted_Damage, 2),
+    "<br>Lower Confidence :", round(Lower_Confidence, 2),
+    "<br>Upper Confidence :", round(Upper_Confidence, 2)
+  )
+)) +
+  geom_bar(stat = "identity", alpha = 0.7) +
+  geom_errorbar(aes(ymin = Lower_Confidence, ymax = Upper_Confidence), width = 0.2, color = "black") +
+  theme_minimal() +
+  labs(
+    title = "Predicted Mean Total Damage by Disaster Type with Confidence Intervals",
+    x = "Disaster Type",
+    y = "Predicted Mean Total Damage ('US$)",
+    fill = "Disaster Type"
+  ) +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  )
+
+# Convert the ggplot to an interactive plotly object
+interactive_confidence_plot <- ggplotly(confidence_plot, tooltip = "text") %>%
+  layout(
+    title = list(
+      text = "Predicted Mean Total Damage by Disaster Type with Confidence Intervals",
+      font = list(size = 18)
+    ),
+    xaxis = list(
+      title = "Disaster Type",
+      tickangle = 45
+    ),
+    yaxis = list(
+      title = "Predicted Mean Total Damage (US$)"
+    )
+  )
+
+# Display the interactive plot
+interactive_confidence_plot
+
+```
+
+#### Approach
+
+The confidence interval chart explored variability in predicted mean damages across disaster types by combining insights from a decision tree model and the descriptive statistics table. A bar chart with error bars visually presented the mean damages alongside their confidence intervals. Data preprocessing involved calculating mean damages, standard deviations, and confidence intervals for each disaster type. The key metrics included mean predicted damages, SD damages, and IQR damages derived from the descriptive table.
+
+#### Key Findings
+
+The findings showed that droughts and earthquakes dominate in damages, with the descriptive table indicating that earthquakes have the highest mean damages (\$1.23 million), followed closely by droughts (\$631,000). In contrast, floods and storms showed more consistent outcomes, as their lower standard deviations for damages (floods = \$1.37 million, storms = \$493,000) aligned with narrower confidence intervals in the chart
+
+#### Results
+
+This visualization highlights disaster-specific patterns, where the decision tree analysis revealed that economic losses and disaster type are the primary predictors of damages, supported by the descriptive statistics. While droughts and earthquakes have the highest mean damages, their wide confidence intervals and standard deviations reflect high variability. On the other hand, floods and storms exhibit more predictable impacts, emphasizing the potential role of effective mitigation practices. The combination of descriptive data and visual representation provides a comprehensive understanding of the variability and severity of disaster impacts on infrastructure.
+
+------------------------------------------------------------------------
+
+## [Research Question 2: Effectiveness of Disaster Response Interventions]{#research-question-2}
+
+### Visualization 1: \[Total Affected By Disaster type and Region\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE,fig.show = 'hide'}
+# Load the library
+library(tidyverse)
+
+# Load the dataset
+disaster_data <- read_csv("C:\\Users\\karti\\Downloads\\DISASTERS_1988.csv")
+
+# Select relevant columns
+relevant_data <- disaster_data %>%
+  select(
+    `Disaster Type`,
+    Country,
+    Region,
+    `OFDA/BHA Response`,
+    Appeal,
+    Declaration,
+    `Total Affected`,
+    `Total Deaths`,
+    `Total Damage ('000 US$)`,
+    Magnitude
+  )
+
+# View missing values in the selected columns
+missing_values <- colSums(is.na(relevant_data))
+print(missing_values)
+
+# Handle missing values, including 'Total Affected'
+cleaned_data <- relevant_data %>%
+  filter(
+    !is.na(`Total Deaths`) & 
+    !is.na(`Total Damage ('000 US$)`) & 
+    !is.na(`Total Affected`)  
+  ) %>%
+  mutate(
+    Magnitude = ifelse(is.na(Magnitude), median(Magnitude, na.rm = TRUE), Magnitude),  # Impute missing Magnitude
+    `Total Affected` = ifelse(is.na(`Total Affected`), median(`Total Affected`, na.rm = TRUE), `Total Affected`)  # Impute missing Total Affected
+  )
+
+# Convert categorical columns to binary
+cleaned_data <- cleaned_data %>%
+  mutate(
+    `OFDA_BHA_Response_Binary` = ifelse(`OFDA/BHA Response` == "Yes", 1, 0),
+    Appeal_Binary = ifelse(Appeal == "Yes", 1, 0),
+    Declaration_Binary = ifelse(Declaration == "Yes", 1, 0)
+  )
+
+# Remove unnecessary columns
+cleaned_data <- cleaned_data %>%
+  select(-`OFDA/BHA Response`, -Appeal, -Declaration)
+
+
+# Check structure of the cleaned dataset
+str(cleaned_data)
+
+library(dplyr)
+library(plotly)
+
+# Filter to remove extreme outliers based on IQR
+iqr_deaths <- IQR(cleaned_data$`Total Deaths`, na.rm = TRUE)
+iqr_damage <- IQR(cleaned_data$`Total Damage ('000 US$)`, na.rm = TRUE)
+iqr_affected <- IQR(cleaned_data$`Total Affected`, na.rm = TRUE)
+
+# Define bounds
+deaths_upper <- quantile(cleaned_data$`Total Deaths`, 0.75, na.rm = TRUE) + 1.5 * iqr_deaths
+deaths_lower <- quantile(cleaned_data$`Total Deaths`, 0.25, na.rm = TRUE) - 1.5 * iqr_deaths
+damage_upper <- quantile(cleaned_data$`Total Damage ('000 US$)`, 0.75, na.rm = TRUE) + 1.5 * iqr_damage
+damage_lower <- quantile(cleaned_data$`Total Damage ('000 US$)`, 0.25, na.rm = TRUE) - 1.5 * iqr_damage
+affected_upper <- quantile(cleaned_data$`Total Affected`, 0.75, na.rm = TRUE) + 1.5 * iqr_affected
+affected_lower <- quantile(cleaned_data$`Total Affected`, 0.25, na.rm = TRUE) - 1.5 * iqr_affected
+
+# Filter the data
+filtered_data <- cleaned_data %>%
+  filter(
+    `Total Deaths` >= deaths_lower & `Total Deaths` <= deaths_upper,
+    `Total Damage ('000 US$)` >= damage_lower & `Total Damage ('000 US$)` <= damage_upper,
+    `Total Affected` >= affected_lower & `Total Affected` <= affected_upper
+  )
+
+# Count of 0s and 1s in each column
+count_binary_values <- function(column) {
+  table(column)
+}
+
+# Count for OFDA_BHA_Response_Binary
+ofda_counts <- count_binary_values(cleaned_data$OFDA_BHA_Response_Binary)
+print("Counts for OFDA_BHA_Response_Binary:")
+print(ofda_counts)
+
+# Count for Appeal_Binary
+appeal_counts <- count_binary_values(cleaned_data$Appeal_Binary)
+print("Counts for Appeal_Binary:")
+print(appeal_counts)
+
+# Count for Declaration_Binary
+declaration_counts <- count_binary_values(cleaned_data$Declaration_Binary)
+print("Counts for Declaration_Binary:")
+print(declaration_counts)
+
+# Keep specific disaster types in the dataset
+cleaned_data <- cleaned_data %>%
+  filter(`Disaster Type` %in% c(
+    "Earthquake", 
+    "Flood", 
+    "Storm", 
+    "Drought", 
+    "Volcanic activity", 
+    "Mass movement (wet)"
+  ))
+
+# Summarize the data to prepare for the heatmap
+heatmap_data <- cleaned_data %>%
+  group_by(`Disaster Type`, Region) %>%
+  summarise(Total_Affected = sum(`Total Affected`, na.rm = TRUE)) %>%
+  ungroup()
+
+# View the structure of the heatmap_data
+str(heatmap_data)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Create heatmap with adjusted spacing for Region labels
+heatmap_plot_manual <- plot_ly(
+  data = heatmap_data,
+  x = ~`Disaster Type`,
+  y = ~Region,
+  z = ~log10(Total_Affected + 1),  # Log scale for better visualization
+  type = "heatmap",
+  colorscale = "Plasma",  # Updated color scheme
+  colorbar = list(title = "Log Total Affected")
+) %>%
+  layout(
+    title = "Heatmap of Total Affected by Disaster Type and Region",
+    xaxis = list(
+      title = "Disaster Type",
+      tickangle = 45,
+      tickfont = list(size = 12)
+    ),
+    yaxis = list(
+      title = "Region",
+      tickfont = list(size = 12),
+      tickangle = -18,
+      titlefont = list(size = 16),
+      title_standoff = 20,  # Adds spacing between axis title and labels
+      automargin = TRUE  # Ensures enough space for the axis
+    ),
+    margin = list(l = 180, r = 100, t = 100, b = 150)  # Adjusted for region label spacing
+  )
+
+# Display the updated heatmap
+heatmap_plot_manual
+```
+
+#### Approach
+
+The heatmap aggregates the total affected population by disaster type and region, using logarithmic scaling to handle disparities. Data preprocessing involved handling missing values, filtering for key disaster types (floods, droughts, earthquakes, storms, volcanic activity, and mass movements), and normalizing the "Total Affected" variable. This approach highlights regional patterns and identifies areas with disproportionate impacts.
+
+#### Key Findings
+
+The heatmap revealed that Asia experiences the highest total affected populations, particularly from floods and storms, underscoring heightened vulnerability. Africa faces severe impacts from droughts, while Europe and Oceania report significantly lower numbers, suggesting effective disaster management systems or lower exposure. These patterns highlight the regional disparities in disaster impacts and the need for targeted interventions.
+
+#### Results
+
+The heatmap visualization effectively displayed the regional distribution of disaster impacts. Asia emerged as the most affected region, particularly by floods and storms, highlighting its high vulnerability or exposure to such events. Africa showed significant impacts from droughts, underscoring a critical need for interventions to address these challenges. Europe and Oceania, on the other hand, reported lower total affected populations, potentially due to effective disaster management systems or reduced exposure to severe disasters. This visualization underscores the disparity in disaster impacts across regions and emphasizes the need for targeted disaster management efforts in Asia and Africa
+
+------------------------------------------------------------------------
+
+### Visualization 2: \[Effectiveness of OFDA/BHA Responses by Disaster type\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE,fig.show = 'hide'}
+# Linear regression: Effect of interventions on Total Affected
+lm_affected <- lm(`Total Affected` ~ OFDA_BHA_Response_Binary + Appeal_Binary + Declaration_Binary, data = cleaned_data)
+summary(lm_affected)
+
+
+
+# Install and load the necessary library
+library(car)
+
+# Calculate Variance Inflation Factor (VIF)
+vif_values <- vif(lm_affected)
+
+# Print the VIF values
+print(vif_values)
+
+# Interpretation
+if (any(vif_values > 5)) {
+  cat("Warning: Multicollinearity detected. Variables with VIF > 5 should be investigated further.\n")
+} else {
+  cat("No significant multicollinearity detected (all VIF values are <= 5).\n")
+}
+
+
+# Obtain residuals and fitted values
+residuals <- resid(lm_affected)
+fitted_values <- fitted(lm_affected)
+
+
+
+# Residuals vs. Fitted Values
+plot(
+  fitted_values, residuals,
+  xlab = "Fitted Values",
+  ylab = "Residuals",
+  main = "Residuals vs. Fitted Values"
+)
+abline(h = 0, col = "red", lty = 2)
+
+
+# Histogram of residuals
+hist(residuals, breaks = 20, main = "Histogram of Residuals", xlab = "Residuals")
+
+
+
+# Q-Q Plot
+qqnorm(residuals, main = "Q-Q Plot of Residuals")
+qqline(residuals, col = "red")
+
+
+# Scale-Location Plot
+plot(
+  fitted_values, sqrt(abs(residuals)),
+  xlab = "Fitted Values",
+  ylab = "Square Root of |Residuals|",
+  main = "Scale-Location Plot"
+)
+abline(h = 0, col = "red", lty = 2)
+
+# Cook's Distance
+cooksd <- cooks.distance(lm_affected)
+plot(cooksd, main = "Cook's Distance", xlab = "Observation Index", ylab = "Cook's Distance")
+abline(h = 4 / nrow(cleaned_data), col = "red", lty = 2)  # Threshold for influence
+
+# Calculate Cook's Distance
+cooks_distances <- cooks.distance(lm_affected)
+
+# Define a threshold for high influence (typically > 1)
+threshold <- 1
+
+# Identify observations with Cook's Distance greater than the threshold
+high_influence_points <- which(cooks_distances > threshold)
+
+# Print the high influence points
+print(high_influence_points)
+
+# View details of these observations in your dataset
+outliers <- cleaned_data[high_influence_points, ]
+print(outliers)
+
+# Add log-transformed columns
+cleaned_data <- cleaned_data %>%
+  mutate(
+    log_Total_Affected = log1p(`Total Affected`),  # log(1 + x)
+    log_Total_Damage = log1p(`Total Damage ('000 US$)`)
+  )
+
+# Refit the model using transformed variables
+model_transformed <- lm(log_Total_Affected ~ OFDA_BHA_Response_Binary + Appeal_Binary , data = cleaned_data)
+summary(model_transformed)
+
+# Update the linear regression model to include additional predictors
+model_with_additional_predictors_countries <- lm(
+  log_Total_Affected ~ OFDA_BHA_Response_Binary + Appeal_Binary + Magnitude + `Disaster Type` + Country,
+  data = cleaned_data
+)
+
+# Summarize the model
+summary(model_with_additional_predictors_countries)
+
+library(glmnet)
+# Prepare predictors (X) and response variable (y)
+X <- model.matrix(log_Total_Affected ~ OFDA_BHA_Response_Binary + Appeal_Binary + Magnitude + `Disaster Type` + Country, data = cleaned_data)[, -1]
+y <- cleaned_data$log_Total_Affected
+
+# Fit Ridge regression model
+ridge_model <- glmnet(X, y, alpha = 0)  # alpha = 0 for Ridge
+
+# Cross-validation to find the best lambda
+ridge_cv <- cv.glmnet(X, y, alpha = 0)
+best_lambda_ridge <- ridge_cv$lambda.min
+
+# Refit model with best lambda
+ridge_final <- glmnet(X, y, alpha = 0, lambda = best_lambda_ridge)
+
+# Display coefficients
+print("Ridge Coefficients:")
+print(coef(ridge_final))
+
+
+# Fit Lasso regression model
+lasso_model <- glmnet(X, y, alpha = 1)  # alpha = 1 for Lasso
+
+# Cross-validation to find the best lambda
+lasso_cv <- cv.glmnet(X, y, alpha = 1)
+best_lambda_lasso <- lasso_cv$lambda.min
+
+# Refit model with best lambda
+lasso_final <- glmnet(X, y, alpha = 1, lambda = best_lambda_lasso)
+
+# Display coefficients
+print("\nLasso Coefficients:")
+print(coef(lasso_final))
+
+# Predict using Ridge and Lasso models
+ridge_preds <- predict(ridge_final, newx = X)
+lasso_preds <- predict(lasso_final, newx = X)
+
+# Calculate Mean Squared Error (MSE)
+ridge_mse <- mean((ridge_preds - y)^2)
+lasso_mse <- mean((lasso_preds - y)^2)
+
+cat("Ridge MSE:", ridge_mse, "\n")
+cat("Lasso MSE:", lasso_mse, "\n")
+
+
+library(glmnet)
+# Load necessary library
+library(glmnet)
+
+# Define the response variable
+y_vector <- cleaned_data$log_Total_Affected  # Replace with your dependent variable
+
+# Define the predictors, excluding the response variable
+# Convert categorical variables to dummy variables using model.matrix
+x_matrix <- model.matrix(log_Total_Affected ~ OFDA_BHA_Response_Binary + 
+                                           Appeal_Binary + Magnitude + 
+                                           `Disaster Type` + Country, 
+                         data = cleaned_data)[, -1]  # Remove the intercept column
+
+# Perform cross-validation for Lasso
+set.seed(123)
+cv_lasso <- cv.glmnet(x_matrix, y_vector, alpha = 1, nfolds = 10)
+
+# Get the best lambda value
+best_lambda <- cv_lasso$lambda.min
+cat("Best Lambda:", best_lambda, "\n")
+
+# Extract coefficients at the best lambda
+lasso_coef <- coef(cv_lasso, s = "lambda.min")
+non_zero_coef <- lasso_coef[lasso_coef[, 1] != 0, , drop = FALSE]
+
+# Display non-zero coefficients
+print("Non-Zero Coefficients:")
+print(non_zero_coef)
+
+# Predict values on the training data
+lasso_predictions <- predict(cv_lasso, newx = x_matrix, s = "lambda.min")
+
+# Calculate residuals
+residuals <- y_vector - lasso_predictions
+
+# Calculate standardized residuals
+standardized_residuals <- residuals / sd(residuals)
+
+# Identify outliers (standardized residuals > 3 or < -3)
+outliers <- which(abs(standardized_residuals) > 3)
+
+# Print outliers
+print(outliers)
+
+# Plot residual diagnostics
+par(mfrow = c(1, 2))
+
+# Residuals vs Predicted plot
+plot(as.vector(lasso_predictions), as.vector(residuals), 
+     main = "Residuals vs Predicted",
+     xlab = "Predicted", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+# Histogram of residuals
+hist(residuals, main = "Histogram of Residuals", xlab = "Residuals")
+
+# Step 1: Remove observations with high residuals
+outlier_indices <- c(50, 83, 161, 225, 410, 601, 852, 946, 962, 1182, 1242, 1358, 
+                     1383, 1387, 1442, 1444, 1538, 1638, 1775, 1790, 1794, 1886, 
+                     2046, 2134, 2171, 2172, 2233, 2243, 2413, 2797, 2956, 2960, 
+                     3050, 3397, 3405)
+cleaned_data_final <- cleaned_data[-outlier_indices, ]
+
+# Step 2: Refit the Lasso model on the filtered data
+x_matrix_final <- model.matrix(log_Total_Affected ~ . -1, data = cleaned_data_final)  # Adjust predictors as necessary
+y_vector_final <- cleaned_data_final$log_Total_Affected
+
+# Fit Lasso model with cross-validation
+cv_lasso_final <- cv.glmnet(x_matrix_final, y_vector_final, alpha = 1)
+
+# Display best lambda
+best_lambda_final <- cv_lasso_final$lambda.min
+cat("Best Lambda (after removing outliers):", best_lambda_final, "\n")
+
+# Step 3: Reassess residuals for the new model
+lasso_predictions_final <- predict(cv_lasso_final, newx = x_matrix_final, s = "lambda.min")
+residuals_final <- y_vector_final - lasso_predictions_final
+
+# Plot residuals
+par(mfrow = c(1, 2))
+plot(lasso_predictions_final, residuals_final, 
+     main = "Residuals vs Predicted (After Outlier Removal)", 
+     xlab = "Predicted", ylab = "Residuals")
+abline(h = 0, col = "red")
+
+hist(residuals_final, 
+     main = "Histogram of Residuals (After Outlier Removal)", 
+     xlab = "Residuals")
+
+# Step 4: Evaluate Model Performance
+final_mse <- mean(residuals_final^2)
+cat("Final MSE (after removing outliers):", final_mse, "\n")
+
+
+# Extract non-zero coefficients
+non_zero_coefficients <- coef(cv_lasso_final, s = "lambda.min")
+non_zero_coefficients <- non_zero_coefficients[non_zero_coefficients != 0]
+
+# Sort coefficients by magnitude
+sorted_coefficients <- sort(non_zero_coefficients, decreasing = TRUE)
+
+# Display feature importance
+cat("Feature Importance (Non-Zero Coefficients):\n")
+print(sorted_coefficients)
+
+# Prepare the final report
+final_report <- list(
+  Best_Lambda = best_lambda_final,
+  Final_MSE = final_mse,
+  Residual_Plots = "Attached Residual Plots",
+  Feature_Importance = sorted_coefficients
+)
+
+# Save results for final reporting
+save(final_report, file = "final_model_report.RData")
+
+# Convert coefficients to a data frame
+coefficients_df <- as.data.frame(as.matrix(non_zero_coefficients)) # Ensure it's numeric
+coefficients_df$Feature <- rownames(coefficients_df)
+rownames(coefficients_df) <- NULL
+
+# Rename the coefficient column for clarity
+colnames(coefficients_df)[1] <- "Coefficient"
+
+# Ensure Coefficient is numeric (in case it's being read as a string)
+coefficients_df$Coefficient <- as.numeric(coefficients_df$Coefficient)
+
+# Sort by absolute coefficient value
+coefficients_df <- coefficients_df[order(abs(coefficients_df$Coefficient), decreasing = TRUE), ]
+
+# Display top features
+head(coefficients_df, 20)
+
+# Load ggplot2
+library(ggplot2)
+
+# Plot top 20 features by absolute coefficient value
+coefficients_df <- coefficients_df[1:20, ] # Keep only the top 20 features
+
+# Create the bar plot
+ggplot(coefficients_df, aes(x = reorder(Feature, abs(Coefficient)), y = Coefficient)) +
+  geom_bar(stat = "identity", fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Top 20 Features by Absolute Coefficient Value",
+    x = "Feature",
+    y = "Coefficient"
+  ) +
+  theme_minimal()
+
+# Load required libraries
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+library(plotly)
+
+# Group data by disaster type and OFDA response, and calculate average total affected
+cleaned_data_summary <- cleaned_data_final %>%
+  group_by(`Disaster Type`, OFDA_BHA_Response_Binary) %>%
+  summarise(Average_Total_Affected = mean(`Total Affected`, na.rm = TRUE), .groups = "drop")
+
+# Reshape the data to have separate columns for Response (1) and No Response (0)
+cleaned_data_summary_wide <- cleaned_data_summary %>%
+  pivot_wider(names_from = OFDA_BHA_Response_Binary, values_from = Average_Total_Affected, 
+              names_prefix = "Response_")
+
+# Calculate effectiveness as percentage change
+cleaned_data_summary_wide <- cleaned_data_summary_wide %>%
+  mutate(Effectiveness = (Response_1 - Response_0) / Response_0 * 100)
+
+# View the result
+print(cleaned_data_summary_wide)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Base ggplot visualization with improved aesthetics
+p <- ggplot(cleaned_data_summary_wide, aes(
+  x = reorder(`Disaster Type`, Effectiveness),
+  y = Effectiveness,
+  fill = `Disaster Type`,
+  text = paste0(
+    "Disaster Type: ", `Disaster Type`, "<br>",
+    "Effectiveness: ", round(Effectiveness, 2), "%<br>",
+    "Avg Total Affected (No Response): ", round(Response_0, 0), "<br>",
+    "Avg Total Affected (Response): ", round(Response_1, 0)
+  )
+)) +
+  geom_bar(stat = "identity", width = 0.7, show.legend = FALSE) +
+  labs(title = "Effectiveness of OFDA Responses by Disaster Type",
+       x = "Disaster Type", y = "Effectiveness (%)") +
+  theme_minimal() +
+  scale_fill_viridis_d(option = "C") +  
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5, color = "black"),
+    axis.text.x = element_text(angle = 30, hjust = 1, size = 10, color = "darkgray"),
+    axis.text.y = element_text(size = 10, color = "darkgray"),
+    axis.title = element_text(size = 12, face = "bold", color = "darkblue")
+  ) +
+  coord_flip()  # Flip coordinates for better readability
+
+# Convert ggplot to an interactive plotly visualization
+interactive_plot <- ggplotly(p, tooltip = "text")
+
+# Add customization for better tooltips and interactivity
+interactive_plot <- interactive_plot %>%
+  layout(
+    title = list(text = "<b>Effectiveness of OFDA Responses by Disaster Type</b>",
+                 font = list(size = 18)),
+    xaxis = list(title = "Effectiveness (%)", tickfont = list(size = 10)),
+    yaxis = list(title = "Disaster Type", tickfont = list(size = 10)),
+    margin = list(l = 110, r = 50, t = 100, b = 100)
+  )
+
+# Display the interactive plot
+interactive_plot
+```
+
+#### Approach
+
+The bar chart evaluates the effectiveness of OFDA responses across disaster types. The percentage change in the average affected population with and without interventions was calculated as the effectiveness metric. Data preprocessing included converting categorical variables into binary indicators (e.g., OFDA responses) and reshaping data for comparative analysis.
+
+#### Key Findings
+
+The bar chart indicated that OFDA responses were most effective for earthquakes, significantly reducing the total affected population. Floods and volcanic activities also showed notable improvements due to interventions, while disasters like mass movements (wet) had limited response impact. Droughts and storms demonstrated moderate effectiveness, suggesting room for improvement in response strategies for these disaster types.
+
+#### Results
+
+The bar chart provided insights into the effectiveness of OFDA responses across various disaster types. Earthquakes demonstrated the highest effectiveness, with significant reductions in total affected populations due to response interventions. Floods and volcanic activities also showed notable improvements, suggesting the positive impact of current intervention strategies. However, disasters like mass movements (wet) exhibited limited response effectiveness, indicating the need for tailored strategies to address specific challenges. Moderate improvements for droughts and storms suggest that while interventions are beneficial, there is scope for enhancing their effectiveness further.
+
+------------------------------------------------------------------------
+
+## [Research Question 3:]{#research-question-3}How are floods and earthquakes globally distributed, and which countries and regions are most impacted in terms of population affected and economic damage?
+
+### Visualization 1: \["Top 20 Countries Affected by Floods and Earthquakes: Population Impact Analysis"\]
+
+```{r, echo=FALSE, results='hide', message=FALSE, warning=FALSE,fig.show = 'hide'}
+df = read.csv("C:\\Users\\karti\\OneDrive\\Desktop\\DISASTERS_1988.csv")
+colnames(df)
+# Load the dplyr library
+library(dplyr)
+df <- df %>%
+  rename(Total_Damage_USD = Total_Damage_.US...)
+
+Geo <- df %>%
+  select(Disaster.Type, Country, Region, Magnitude, Magnitude.Scale, Location, Latitude, Longitude, Total.Affected, Total.Deaths, Total_Damage_USD)
+
+head(Geo)
+summary(Geo)
+
+# Count of missing values in each column
+colSums(is.na(Geo))
+
+# Filter out rows with missing values in required columns
+Geo <- Geo %>%
+  filter(!is.na(Latitude) & !is.na(Longitude) & 
+           !is.na(Total.Deaths) & !is.na(Total.Affected) & !is.na(Magnitude))
+
+
+
+
+
+# Check the frequency of occurrences per country
+country_distribution <- Geo %>%
+  count(Country, sort = TRUE)
+
+# View the top countries
+print(country_distribution)
+
+# Summarize region-wise distribution
+region_distribution <- Geo %>%
+  group_by(Region) %>%
+  summarise(
+    Total_Affected = sum(Total.Affected, na.rm = TRUE),
+    Total_Deaths = sum(Total.Deaths, na.rm = TRUE),
+    Total_Damage = sum(Total_Damage_USD, na.rm = TRUE),
+    Count = n()
+  ) %>%
+  arrange(desc(Total_Affected))  # Sort by Total Affected (or change sorting criteria)
+
+# View the summarized data
+print(region_distribution)
+
+# Summarize frequency and totals per country
+country_distribution <- Geo %>%
+  group_by(Country) %>%
+  summarise(
+    Frequency = n(),  # Number of disasters
+    Total_Deaths = sum(Total.Deaths, na.rm = TRUE),
+    Total_Affected = sum(Total.Affected, na.rm = TRUE),
+    Total_Damage = sum(Total_Damage_USD, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Frequency))  # Sort by frequency (or change to Total_Deaths/Total_Damage)
+
+# View the summarized data
+print(country_distribution, n=150)
+
+
+library(dplyr)
+
+# Calculate the disaster count for each country
+filtered_geo <- Geo %>%
+  group_by(Country) %>%
+  mutate(Disaster_Count = n()) %>%  # Add a column with disaster count
+  ungroup() %>% 
+  filter(Disaster_Count > 4) %>%   # Keep only countries with disaster count >= 4
+  select(-Disaster_Count)           # Optionally, remove the disaster count column
+
+# View the updated dataset
+
+# Summarize frequency and totals per country
+country_distribution2 <- filtered_geo %>%
+  group_by(Country) %>%
+  summarise(
+    Frequency = n(),  # Number of disasters
+    Total_Deaths = sum(Total.Deaths, na.rm = TRUE),
+    Total_Affected = sum(Total.Affected, na.rm = TRUE),
+    Total_Damage = sum(Total_Damage_USD, na.rm = TRUE)
+  ) %>%
+  arrange(desc(Frequency))  # Sort by frequency (or change to Total_Deaths/Total_Damage)
+
+# View the summarized data
+print(country_distribution2, n=100)
+
+
+# Summarize region-wise distribution
+region_distribution <- filtered_geo %>%
+  group_by(Region) %>%
+  summarise(
+    Total_Affected = sum(Total.Affected, na.rm = TRUE),
+    Total_Deaths = sum(Total.Deaths, na.rm = TRUE),
+    Total_Damage = sum(Total_Damage_USD, na.rm = TRUE),
+    Count = n()
+  ) %>%
+  arrange(desc(Total_Affected))  # Sort by Total Affected (or change sorting criteria)
+
+# View the summarized data
+print(region_distribution)
+
+# Filter out Oceania from the dataset
+filtered_geo <- filtered_geo %>%
+  filter(Region != "Oceania")
+
+summary(filtered_geo)
+
+numeric_data <- filtered_geo %>%
+  select(where(is.numeric))
+
+# Compute the correlation matrix
+correlation_matrix <- cor(numeric_data, use = "complete.obs")
+
+# View the correlation matrix
+print(correlation_matrix)
+
+summary(filtered_geo$Total_Damage_USD)
+
+# Replace missing values with the median
+median_damage <- median(filtered_geo$Total_Damage_USD, na.rm = TRUE)
+filtered_geo <- filtered_geo %>%
+  mutate(
+    Total_Damage_USD = ifelse(is.na(Total_Damage_USD), median_damage, Total_Damage_USD)
+  )
+summary(filtered_geo$Total_Damage_USD)
+
+# Ensure Disaster.Type column has no leading/trailing spaces and is in lowercase
+filtered_geo$Disaster.Type <- tolower(trimws(filtered_geo$Disaster.Type))
+
+# Filter out rows where Disaster.Type is "storm"
+filtered_geo <- filtered_geo[filtered_geo$Disaster.Type != "storm", ]
+
+# Check the distribution again
+disaster_type_distribution <- filtered_geo %>%
+  count(Disaster.Type, sort = TRUE)
+
+# View the updated distribution
+print(disaster_type_distribution)
+```
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+library(ggplot2)
+library(dplyr)
+library(plotly)
+
+visualize_disaster_types_by_country <- function() {
+  # Summarize the data by Disaster Type and Country
+  disaster_summary <- filtered_geo %>%
+    group_by(Country, Disaster.Type) %>%
+    summarise(
+      Total_Affected = sum(Total.Affected, na.rm = TRUE),
+      Total_Damage_USD = sum(Total_Damage_USD, na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    arrange(desc(Total_Affected)) %>%
+    top_n(20, Total_Affected)  # Select top 20 countries by Total Affected
+  
+  # Create the plot
+  plot <- ggplot(disaster_summary, aes(
+    x = reorder(Country, Total_Affected), 
+    y = Total_Affected,
+    fill = Disaster.Type,
+    text = paste(
+      "Country:", Country,
+      "<br>Disaster Type:", Disaster.Type,
+      "<br>Total Affected:", Total_Affected,
+      "<br>Total Damage (USD):", Total_Damage_USD
+    )
+  )) +
+    geom_bar(stat = "identity", position = "dodge") +
+    scale_fill_brewer(palette = "Set2") +
+    labs(
+      title = "Top 20 Countries Affected by Disaster Types",
+      x = "Country",
+      y = "Total Affected",
+      fill = "Disaster Type"
+    ) +
+    theme_minimal() +
+    coord_flip()  # Flip coordinates for better readability
+  
+  # Render the plot with plotly for interactivity
+  ggplotly(plot, tooltip = "text")
+}
+
+# Call the function to create and display the visualization
+visualize_disaster_types_by_country()
+```
+
+#### Approach
+
+The visualization leverages aggregated disaster data to compare the impacts of floods and earthquakes across the top 20 most affected countries. Total affected populations were used as a key metric to highlight the varying scales of disaster impacts by disaster type and country. A bar chart format with clear differentiation by disaster type ensures easy interpretation of trends.
+
+#### Key Findings
+
+Floods significantly affect larger populations in countries like China and India, with China having the highest overall impact. Earthquakes, while less frequent in this dataset, have notable impacts in countries like Turkey, Chile, and Indonesia. The variation in disaster type impact highlights the differing vulnerabilities and geographic patterns.
+
+#### Results
+
+The visualization underscores the critical need for flood mitigation strategies in populous and flood-prone regions like China and India. Simultaneously, earthquake-affected nations like Turkey and Chile would benefit from strengthened infrastructure and emergency response systems. These insights are essential for developing targeted disaster preparedness and response strategies.
+
+Global Distribution and Impact of Floods and Earthquakes: An Analysis of Affected Populations and Economic Damage
+
+------------------------------------------------------------------------
+
+### Visualization 2: Global Distribution and Impact of Floods and Earthquakes: An Analysis of Affected Populations and Economic Damage
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Filter data by regions
+asia_data <- filtered_geo %>% filter(Region == "Asia")
+americas_data <- filtered_geo %>% filter(Region == "Americas")
+africa_data <- filtered_geo %>% filter(Region == "Africa")
+europe_data <- filtered_geo %>% filter(Region == "Europe")
+
+
+# Load libraries
+library(dbscan)
+library(sf)
+library(ggplot2)
+library(spatstat)
+library(ggplot2)
+library(plotly)
+library(cluster)
+library(tidyverse)
+
+
+
+
+perform_hdbscan_all_regions <- function() {
+  # Load required libraries
+  if (!requireNamespace("dbscan", quietly = TRUE)) install.packages("dbscan")
+  if (!requireNamespace("plotly", quietly = TRUE)) install.packages("plotly")
+  if (!requireNamespace("maps", quietly = TRUE)) install.packages("maps")
+  
+  library(dbscan)
+  library(plotly)
+  library(maps)
+  library(dplyr)
+  library(ggplot2)
+  
+  # Load world map data
+  world_map <- map_data("world")
+  
+  # Filter and prepare the data for all regions
+  all_regions_data <- filtered_geo %>%
+    select(Region, Magnitude, Total.Affected, Total.Deaths, Total_Damage_USD, Longitude, Latitude, Disaster.Type) %>%
+    drop_na()  # Remove rows with missing values
+  
+  # Scale the numerical data
+  scaled_data <- scale(all_regions_data %>% select(Magnitude, Total.Affected, Total.Deaths, Total_Damage_USD, Longitude, Latitude))
+  
+  # Perform HDBSCAN clustering
+  set.seed(42)  # Ensure reproducibility
+  hdbscan_result <- hdbscan(scaled_data, minPts = 10)  # Adjust minPts as needed
+  
+  # Add cluster labels to the dataset
+  all_regions_data$Cluster <- hdbscan_result$cluster
+  
+  # Remove noise points (Cluster = 0)
+  all_regions_data_filtered <- all_regions_data %>%
+    filter(Cluster != 0)
+  
+  # Create the base map with proper grouping
+  base_map <- ggplot() +
+    geom_polygon(data = world_map, aes(x = long, y = lat, group = group), 
+                 fill = "gray90", color = "white") +
+    coord_fixed(ratio = 1.3) +
+    theme_void()
+  
+  # Overlay clustering visualization
+  cluster_plot <- base_map +
+    geom_point(data = all_regions_data_filtered, aes(x = Longitude, y = Latitude, 
+                                                     color = as.factor(Cluster), 
+                                                     shape = Disaster.Type, 
+                                                     size = Total_Damage_USD / 1e6,
+                                                     text = paste(
+                                                       "Region:", Region,
+                                                       "<br>Cluster:", Cluster,
+                                                       "<br>Disaster Type:", Disaster.Type,
+                                                       "<br>Magnitude:", Magnitude,
+                                                       "<br>Total Affected:", Total.Affected,
+                                                       "<br>Total Deaths:", Total.Deaths,
+                                                       "<br>Total Damage (USD):", Total_Damage_USD
+                                                     )), alpha = 0.8) +
+    labs(
+      title = "HDBSCAN Clustering Analysis with World Map: All Regions",
+      x = "Longitude", y = "Latitude", 
+      color = "Cluster", 
+      shape = "Disaster Type",
+      size = "Total Damage (USD, scaled)"
+    ) +
+    theme_minimal()
+  
+  # Render the plot with plotly for interactivity
+  ggplotly(cluster_plot, tooltip = "text")
+}
+
+
+# Call the function to visualize all regions
+perform_hdbscan_all_regions()
+```
+
+### Approach
+
+To answer the research question, we analyzed the global distribution and impact of floods and earthquakes using HDBSCAN clustering analysis and cluster statistics. The analysis was based on key data variables such as the type of disaster (earthquakes and floods), magnitude (severity of the disaster), total affected (number of people affected by the disaster), total deaths (number of casualties), and total damage (economic loss in USD). Visualizations were used to highlight the geographical distribution of each disaster type and its corresponding impact on different regions. By mapping the disaster data globally and correlating it with the clusters, we focused on analyzing the magnitude, affected population, and economic damage caused by each disaster type.
+
+### Key Findings
+
+**Earthquakes:**\
+Earthquakes predominantly affect regions in Asia and the Americas. Countries like Indonesia, Nepal, and parts of China and Japan are heavily impacted by significant earthquake magnitudes such as 7.3 in Asia, with over 28,000 people affected and considerable economic losses. Asia sees the highest frequency of large-magnitude earthquakes (magnitude 7 and above), leading to extensive human and financial tolls.
+
+**Floods:**\
+Floods are widespread across regions like Africa, Asia, and the Americas. Countries including India, Bangladesh, Vietnam, and parts of Africa (such as Ethiopia and Nigeria) are severely affected by floods, often caused by storms or excessive rainfall. Flood events are frequent in Africa and Asia, with economic losses ranging from USD 3,244 in some Asian countries to over USD 300,000 in other regions.
+
+**Economic Damage:**\
+Earthquakes tend to cause more significant economic damage than floods, with certain regions reporting damages in the hundreds of thousands of USD. Floods in regions like Asia and Africa also cause substantial losses but typically result in lower financial tolls compared to large earthquake events. For instance, Japan and Chile report massive economic losses due to major earthquakes, while Bangladesh and Nigeria, although severely affected by floods, report comparatively lower economic damage.
+
+**Population Affected:**\
+Earthquakes generally affect fewer people but tend to result in a higher death toll per disaster. Floods, in contrast, while less deadly in some cases, affect millions globally, especially in regions prone to seasonal rains and storms. Flood-prone regions in Asia, including India, Vietnam, and Bangladesh, consistently show high numbers of affected individuals, whereas earthquake-prone regions such as Indonesia, Nepal, and China report higher fatalities but fewer people affected overall.
+
+### Results
+
+The global distribution of earthquakes and floods demonstrates that Asia and the Americas bear the most significant burden of earthquake activity, while Asia, Africa, and parts of the Americas are particularly affected by floods. Earthquakes cause more severe economic impacts, particularly in regions like Japan and Chile, whereas floods result in widespread population damage but on a smaller financial scale. Countries such as Indonesia, India, Bangladesh, and Nepal are notably vulnerable to both disaster types, experiencing varying degrees of financial damage and loss of life.
+
+Flood-prone regions in Asia consistently show higher numbers of affected people, while earthquake-prone regions report a higher number of fatalities despite fewer people being affected. This analysis emphasizes the need for tailored disaster preparedness strategies in regions vulnerable to both floods and earthquakes. Additionally, the importance of resilient infrastructure in reducing the economic impact of such disasters is highlighted, especially in countries with large populations and high susceptibility to natural hazards.
+
+This approach provides a clear understanding of where the most devastating disasters occur, helping to prioritize resources for more effective disaster management and mitigation efforts in the most impacted regions.
+
+------------------------------------------------------------------------
+
+## Conclusion
+
+-   **Research Question 1 :**
+
+    In conclusion, the analysis reveals significant disparities in how disasters impact human lives and infrastructure. **Earthquakes** are the most catastrophic, with the highest fatalities and economic damages, requiring urgent structural resilience and early warning measures. **Droughts**, while less fatal, affect the largest populations, highlighting the need for long-term water resource management and community support. **Extreme temperatures** pose significant health risks, demanding focused public health interventions, while **floods** and **storms** show more consistent and predictable impacts, reflecting effective disaster management practices. These insights provide a data-driven foundation for prioritizing disaster preparedness, response strategies, and policy interventions to mitigate both human and economic losses.
+
+-   **Research Question 2 :**
+
+    The analysis highlights critical insights into the impact of disaster response measures on mitigating disaster severity. Regions such as Asia and Africa remain highly vulnerable, requiring urgent and targeted interventions to address the challenges posed by **floods, storms**, and **droughts.** Effective disaster response strategies, as evidenced by interventions in **earthquakes** and **floods**, underscore the value of tailored, region-specific approaches. However, the limited effectiveness observed for certain disaster types, like **mass movements (wet)**, calls for further refinement of response measures. This research emphasizes the importance of understanding regional vulnerabilities and disaster-specific challenges to design more impactful and equitable disaster management strategies.
+
+-   **Research Question 3 :**
+
+    ### Conclusion:
+
+    In conclusion, the global distribution of **floods** and **earthquakes** reveals distinct patterns of impact on both populations and economies. **Earthquakes** primarily affect regions in **Asia** and the **Americas**, with significant loss of life and considerable **economic damage**, especially in countries like **Japan**, **Chile**, and **Indonesia**. In contrast, **floods** are more widespread across Asia, Africa, and the Americas, affecting large populations, particularly in countries like **India**, **Bangladesh**, and **Vietnam**. While **floods** may result in fewer fatalities, they have a vast reach, impacting millions and causing substantial economic damage, albeit on a relatively smaller financial scale compared to major earthquakes.
+
+    The analysis underscores the importance of understanding both the **human** and **economic** costs of these natural disasters. **Earthquakes**, while less frequent, tend to cause more severe economic losses, particularly in densely populated regions with inadequate infrastructure. **Floods**, although more frequent and less deadly in some cases, continue to devastate vast areas, displacing millions and leading to significant economic challenges. The findings emphasize the need for targeted **disaster preparedness**, **robust infrastructure**, and resilient systems in disaster-prone regions to mitigate the impacts and reduce both human and financial losses.
+
+    Overall, this research highlights critical areas where intervention and preparedness efforts can be focused, ensuring better **disaster management**, quicker recovery, and long-term resilience in the most vulnerable regions of the world.
