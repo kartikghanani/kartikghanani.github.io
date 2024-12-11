@@ -1,1 +1,0 @@
-{"frames":[{"func":"ggplot(filtered_data, aes(x = Total.Deaths, y = Predicted_Deaths, \n    color = Disaster.Type))","file":"","line_number":0,"end_line_number":0,"character_number":0,"end_character_number":0}],"message":"Error: object 'filtered_data' not found\n"}
