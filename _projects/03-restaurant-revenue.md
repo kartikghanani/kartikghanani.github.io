@@ -1,8 +1,11 @@
 ---
 title: "Restaurant Revenue Prediction"
-excerpt: "Regression with interaction terms; adjusted R²=0.982 across 8,368 restaurants to identify key profit drivers."
+excerpt: "Regression with interaction terms; adjusted R²=0.982 across 8,368 restaurants to find key profit drivers."
 order: 3
+year: 2024
+tags: ["R", "SQL", "Regression"]
 ---
+
 
 ## Overview
 Forecasted restaurant revenue using business attributes and statistical modeling, identifying the strongest drivers of profitability.
