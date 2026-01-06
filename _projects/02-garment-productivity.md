@@ -1,8 +1,11 @@
 ---
 title: "Garment Worker Productivity Analysis"
-excerpt: "Voting Regressor achieved R²=0.8117; used SHAP + PCA to explain key drivers and identify underperformance."
+excerpt: "Voting Regressor achieved R²=0.8117; used SHAP + PCA to explain key productivity drivers."
 order: 2
+year: 2025
+tags: ["Python", "ML", "SHAP"]
 ---
+
 
 ## Overview
 Predicted worker productivity for an apparel manufacturer and explained key drivers using interpretable ML.
