@@ -1,0 +1,41 @@
+title: "Kartik Ghanani"
+description: "Data Analytics Engineering (MS @ GMU) | Python • R • SQL • ML • Visualization"
+url: "https://kartikghanani.github.io"
+
+remote_theme: "mmistakes/minimal-mistakes"
+
+plugins:
+  - jekyll-include-cache
+
+minimal_mistakes_skin: "air"  # clean, modern
+
+# Top navigation comes from _data/navigation.yml
+include: ["_pages"]
+
+author:
+  name: "Kartik Ghanani"
+  bio: "MS Data Analytics Engineering @ George Mason University (GPA 3.5). Data Analyst focused on forecasting, ML, and dashboards."
+  location: "Fairfax, VA"
+  links:
+    - label: "LinkedIn"
+      icon: "fab fa-linkedin"
+      url: "https://www.linkedin.com/in/kartik-ghanani-5a24a937a"
+    - label: "Email"
+      icon: "fas fa-envelope"
+      url: "mailto:kartikghanani@gmail.com"
+
+# Collections = project pages (website-like)
+collections:
+  projects:
+    output: true
+    permalink: /projects/:path/
+
+defaults:
+  - scope:
+      path: ""
+      type: projects
+    values:
+      layout: single
+      author_profile: false
+      read_time: false
+      share: false
