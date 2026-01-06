@@ -1,9 +1,5 @@
 ---
-layout: collection
+layout: projects-grid
 title: "Projects"
 permalink: /projects/
-collection: projects
-sort_by: order
-sort_order: ascending
-author_profile: false
 ---
