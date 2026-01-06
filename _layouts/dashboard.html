@@ -1,0 +1,41 @@
+---
+layout: default
+---
+
+<div class="dash">
+  <div class="dash__grid">
+
+    <!-- Left profile card -->
+    <aside class="dash__left">
+      <div class="dash__card dash__profile">
+        <div class="dash__avatar">
+          <img src="{{ site.author.avatar | default: '/assets/images/avatar.jpg' | relative_url }}" alt="{{ site.author.name }}">
+        </div>
+
+        <h1 class="dash__name">{{ site.author.name }}</h1>
+        <p class="dash__subtitle">{{ site.description }}</p>
+
+        <div class="dash__actions">
+          <a class="dash__btn dash__btn--primary" href="{{ '/resume/' | relative_url }}">Resume</a>
+          <a class="dash__btn" href="{{ '/contact/' | relative_url }}">Contact Me</a>
+        </div>
+
+        <div class="dash__social">
+          {% if site.author.links %}
+            {% for link in site.author.links %}
+              <a class="dash__icon" href="{{ link.url }}" target="_blank" rel="noopener">
+                <i class="{{ link.icon }}"></i>
+              </a>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right content cards -->
+    <section class="dash__right">
+      {{ content }}
+    </section>
+
+  </div>
+</div>
