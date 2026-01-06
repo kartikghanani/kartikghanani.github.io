@@ -1,29 +1,31 @@
 ---
-layout: splash
+layout: dashboard
 permalink: /
-title: "Kartik Ghanani"
-header:
-  overlay_color: "#000"
-  overlay_filter: "0.10"
-  actions:
-    - label: "Projects"
-      url: "/projects/"
-    - label: "Resume"
-      url: "/resume/"
-    - label: "Contact"
-      url: "/contact/"
-excerpt: "Data Analyst & Analytics Engineer • MS Data Analytics Engineering @ GMU • Python • R • SQL • ML • Visualization"
+title: ""
 ---
 
-## About
-I’m a Data Analytics Engineering graduate student at George Mason University focused on predictive modeling, forecasting, and building dashboards that drive decision-making.
+<div class="dash__section dash__card">
+  <h2 class="dash__h2">About Me</h2>
+  <p>
+    I’m a Data Analytics Engineering graduate student at George Mason University focused on predictive modeling,
+    forecasting, and building dashboards that drive decision-making.
+  </p>
+</div>
 
-## What I build
-- Predictive models and interpretable ML
-- SQL analytics and reproducible pipelines
-- Interactive dashboards and data storytelling
+<div class="dash__section dash__card">
+  <h2 class="dash__h2">What I Build</h2>
+  <ul>
+    <li>Predictive models and interpretable ML</li>
+    <li>SQL analytics and reproducible pipelines</li>
+    <li>Interactive dashboards and data storytelling</li>
+  </ul>
+</div>
 
-## Highlights
-- **120K+** records analyzed; improved data quality by **30%**; reduced reporting time by **40%**  
-- Forecasting & optimization work that improved outcomes by **10–15%**  
-- ML projects with strong predictive performance (R² up to **0.85**)
+<div class="dash__section dash__card">
+  <h2 class="dash__h2">Highlights</h2>
+  <ul>
+    <li><strong>120K+</strong> records analyzed; improved data quality by <strong>30%</strong>; reduced reporting time by <strong>40%</strong></li>
+    <li>Forecasting &amp; optimization work that improved outcomes by <strong>10–15%</strong></li>
+    <li>ML projects with strong predictive performance (R² up to <strong>0.85</strong>)</li>
+  </ul>
+</div>
