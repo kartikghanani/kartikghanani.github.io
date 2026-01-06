@@ -1,13 +1,9 @@
 ---
-layout: archive
+layout: collection
 title: "Projects"
 permalink: /projects/
+collection: projects
+sort_by: order
+sort_order: ascending
 author_profile: false
 ---
-
-Here are a few projects that highlight my work in predictive modeling, analytics, and visualization.
-
-{% assign sorted = site.projects | sort: 'order' %}
-{% for p in sorted %}
-- [{{ p.title }}]({{ p.url }}) — {{ p.excerpt }}
-{% endfor %}
