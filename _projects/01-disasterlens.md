@@ -2,7 +2,10 @@
 title: "DisasterLens — Global Disaster Analysis"
 excerpt: "Predict disaster fatalities (R²=0.85) + cluster global impact patterns using HDBSCAN and geospatial visuals."
 order: 1
+year: 2025
+tags: ["Python", "ML", "Clustering", "Geo"]
 ---
+
 
 ## Overview
 DisasterLens analyzes global disaster patterns and forecasts fatalities using machine learning.
