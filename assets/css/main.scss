@@ -27,7 +27,7 @@ h1, h2, h3 {
   font-weight: 600;
 }
 
-/* Card-like feel for default archive lists (light-friendly but ok on dark too) */
+/* Card-like feel for default archive lists */
 .archive__item {
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 16px;
@@ -135,4 +135,28 @@ h1, h2, h3 {
   font-weight: 700;
   font-size: .85rem;
   opacity: .9;
+}
+
+/* === Force true dark site background (whole site) === */
+body {
+  background: #0b0f14;
+  color: rgba(255,255,255,0.88);
+}
+
+.page__content, .initial-content, .archive {
+  background: transparent;
+}
+
+a { color: rgba(255,255,255,0.9); }
+a:hover { color: #ffffff; }
+
+.page__footer {
+  background: transparent;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+.greedy-nav {
+  background: rgba(11,15,20,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
 }
