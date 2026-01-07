@@ -186,3 +186,105 @@ a:hover { color: #ffffff; }
   font-size: .85rem;
   opacity: .9;
 }
+
+/* =========================================================
+   DASHBOARD (Home page) - makes it look like reference site
+   ========================================================= */
+
+.dash__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+
+.dash__hero {
+  text-align: center;
+  margin-bottom: 2.2rem;
+}
+
+.dash__name {
+  font-size: 2.6rem;
+  font-weight: 900;
+  margin: 0 0 .35rem;
+  letter-spacing: -0.03em;
+}
+
+.dash__subtitle {
+  margin: 0 auto 1.1rem;
+  max-width: 820px;
+  opacity: .85;
+}
+
+.dash__tags {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .55rem;
+  margin: 0 0 1.2rem;
+}
+
+.dash__tags span {
+  padding: .38rem .75rem;
+  border-radius: 999px;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.14);
+  font-size: .86rem;
+  font-weight: 650;
+  opacity: .95;
+}
+
+.dash__actions {
+  display: flex;
+  justify-content: center;
+  gap: .8rem;
+  flex-wrap: wrap;
+}
+
+.dash__actions a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .6rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.16);
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+  font-weight: 750;
+}
+
+.dash__actions a:hover {
+  border-color: rgba(255,255,255,0.28);
+  background: rgba(255,255,255,0.09);
+}
+
+/* Grid for cards */
+.dash__grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1.2rem;
+  margin-top: 2rem;
+}
+
+/* Cards */
+.dash__card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 18px;
+  padding: 1.5rem;
+}
+
+/* Sections default to full width unless specified */
+.dash__section { grid-column: span 12; }
+
+.dash__h2 {
+  margin: 0 0 .7rem;
+  font-size: 1.25rem;
+  font-weight: 850;
+}
+
+/* 2-column layout on desktop */
+@media (min-width: 900px) {
+  .dash__col-6 { grid-column: span 6; }
+  .dash__col-7 { grid-column: span 7; }
+  .dash__col-5 { grid-column: span 5; }
+}
