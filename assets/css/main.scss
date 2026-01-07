@@ -1,12 +1,12 @@
 ---
 ---
 
-/* Force Minimal Mistakes dark skin */
+/* Minimal Mistakes */
 $mm-skin: "dark";
 @import "minimal-mistakes";
 
 /* =========================
-   Base typography + layout
+   Base (dark + typography)
    ========================= */
 html { font-size: 17px; }
 
@@ -15,36 +15,22 @@ body {
     "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.65;
 
-  /* True dark background */
   background: #0b0f14;
   color: rgba(255,255,255,0.88);
 }
 
-/* Make headings tighter + modern */
 h1, h2, h3 { letter-spacing: -0.02em; }
 
-/* =========================
-   Center content like modern sites
-   ========================= */
+/* Make the main site content centered */
 .initial-content,
 .page__content,
 .archive,
-.page__inner-wrap,
-.layout--home .page__content,
-.layout--single .page__content {
+.page__inner-wrap {
   max-width: 1100px !important;
   margin-left: auto !important;
   margin-right: auto !important;
 }
 
-/* Keep background clean (no white blocks) */
-.page__content,
-.initial-content,
-.archive {
-  background: transparent;
-}
-
-/* Mobile padding so it doesn’t touch edges */
 @media (max-width: 768px) {
   .initial-content,
   .page__content,
@@ -55,9 +41,7 @@ h1, h2, h3 { letter-spacing: -0.02em; }
   }
 }
 
-/* =========================
-   Nav + Footer
-   ========================= */
+/* Nav + footer */
 .greedy-nav a { font-weight: 600; }
 
 .greedy-nav {
@@ -76,18 +60,142 @@ a { color: rgba(255,255,255,0.9); }
 a:hover { color: #ffffff; }
 
 /* =========================
-   Archive cards (default lists)
+   Dashboard layout (HOME)
    ========================= */
-.archive__item {
-  border: 1px solid rgba(255,255,255,0.10);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 14px;
+.dash {
+  padding: 28px 0 40px;
+}
+
+.dash__container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 18px;
+}
+
+/* The main 2-column layout like the reference */
+.dash-grid {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  gap: 22px;
+  align-items: start;
+}
+
+@media (max-width: 980px) {
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Generic card styles (works for BOTH dash-card and dash__card) */
+.dash-card,
+.dash__card {
   background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 18px;
+  padding: 18px;
+  box-shadow: 0 10px 35px rgba(0,0,0,0.25);
+}
+
+/* LEFT profile card */
+.profile-card {
+  padding: 22px;
+  text-align: center;
+}
+
+.avatar {
+  width: 164px;
+  height: 164px;
+  border-radius: 999px;
+  object-fit: cover;
+  display: block;
+  margin: 6px auto 16px;
+  border: 2px solid rgba(255,255,255,0.16);
+}
+
+.avatar--placeholder {
+  display: grid;
+  place-items: center;
+  font-size: 56px;
+  font-weight: 800;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.06);
+}
+
+.profile-name {
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin: 8px 0 6px;
+}
+
+.profile-sub {
+  font-size: 0.95rem;
+  opacity: 0.85;
+  margin: 0 0 18px;
+}
+
+/* Buttons like the reference */
+.cta-row {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 16px;
+}
+
+.btnx {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: 800;
+  text-decoration: none !important;
+  border: 1px solid rgba(255,255,255,0.14);
+}
+
+.btnx--light {
+  background: rgba(255,255,255,0.92);
+  color: #0b0f14 !important;
+}
+
+.btnx--dark {
+  background: rgba(0,0,0,0.18);
+  color: rgba(255,255,255,0.92) !important;
+}
+
+/* Social icons row */
+.icon-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding-top: 8px;
+}
+
+.icon-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  text-decoration: none !important;
+}
+
+.icon-btn i {
+  font-size: 18px;
+}
+
+/* RIGHT side spacing */
+.dash-right > * + * {
+  margin-top: 18px;
+}
+
+/* Make right-side sections look like clean cards */
+.dash__section {
+  margin: 0;
 }
 
 /* =========================
-   Projects Grid (dark modern cards)
+   Projects page cards/grid
    ========================= */
 .projects-wrap { padding: 2rem 0 3rem; }
 
@@ -185,106 +293,4 @@ a:hover { color: #ffffff; }
   font-weight: 700;
   font-size: .85rem;
   opacity: .9;
-}
-
-/* =========================================================
-   DASHBOARD (Home page) - makes it look like reference site
-   ========================================================= */
-
-.dash__container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 2.5rem 1.5rem 4rem;
-}
-
-.dash__hero {
-  text-align: center;
-  margin-bottom: 2.2rem;
-}
-
-.dash__name {
-  font-size: 2.6rem;
-  font-weight: 900;
-  margin: 0 0 .35rem;
-  letter-spacing: -0.03em;
-}
-
-.dash__subtitle {
-  margin: 0 auto 1.1rem;
-  max-width: 820px;
-  opacity: .85;
-}
-
-.dash__tags {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: .55rem;
-  margin: 0 0 1.2rem;
-}
-
-.dash__tags span {
-  padding: .38rem .75rem;
-  border-radius: 999px;
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.14);
-  font-size: .86rem;
-  font-weight: 650;
-  opacity: .95;
-}
-
-.dash__actions {
-  display: flex;
-  justify-content: center;
-  gap: .8rem;
-  flex-wrap: wrap;
-}
-
-.dash__actions a {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: .6rem 1rem;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.16);
-  background: rgba(255,255,255,0.06);
-  text-decoration: none;
-  font-weight: 750;
-}
-
-.dash__actions a:hover {
-  border-color: rgba(255,255,255,0.28);
-  background: rgba(255,255,255,0.09);
-}
-
-/* Grid for cards */
-.dash__grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 1.2rem;
-  margin-top: 2rem;
-}
-
-/* Cards */
-.dash__card {
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.12);
-  border-radius: 18px;
-  padding: 1.5rem;
-}
-
-/* Sections default to full width unless specified */
-.dash__section { grid-column: span 12; }
-
-.dash__h2 {
-  margin: 0 0 .7rem;
-  font-size: 1.25rem;
-  font-weight: 850;
-}
-
-/* 2-column layout on desktop */
-@media (min-width: 900px) {
-  .dash__col-6 { grid-column: span 6; }
-  .dash__col-7 { grid-column: span 7; }
-  .dash__col-5 { grid-column: span 5; }
 }
