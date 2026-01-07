@@ -2,66 +2,92 @@
 layout: default
 permalink: /
 title: ""
-header: false
 ---
 
-<div class="dash__container">
+<div class="dash">
+  <div class="dash__container">
+    <div class="dash-grid">
 
-  <!-- HERO -->
-  <section class="dash__hero dash__card">
-    <h1 class="dash__name">Kartik Ghanani</h1>
+      <!-- LEFT: Profile Card -->
+      <aside class="dash-left">
+        <div class="dash-card profile-card">
 
-    <p class="dash__subtitle">
-      Data Analyst & Analytics Engineer<br>
-      MS Data Analytics Engineering @ GMU
-    </p>
+          <!-- Avatar (optional) -->
+          <img
+            class="avatar"
+            src="{{ site.author.avatar | default: '/assets/images/avatar.jpg' | relative_url }}"
+            alt="{{ site.author.name }}"
+            onerror="this.style.display='none';"
+          />
 
-    <div class="dash__tags">
-      <span>Python</span>
-      <span>R</span>
-      <span>SQL</span>
-      <span>Machine Learning</span>
-      <span>Visualization</span>
+          <h1 class="profile-name">{{ site.author.name }}</h1>
+          <p class="profile-sub">
+            {{ site.description }}
+          </p>
+
+          <div class="cta-row">
+            <a class="btnx btnx--light" href="{{ '/resume/' | relative_url }}">Resume</a>
+            <a class="btnx btnx--dark" href="{{ '/contact/' | relative_url }}">Contact Me</a>
+          </div>
+
+          <div class="icon-row">
+            {% if site.author.links %}
+              {% for link in site.author.links %}
+                <a class="icon-btn" href="{{ link.url }}" target="_blank" rel="noopener">
+                  <i class="{{ link.icon }}"></i>
+                </a>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- RIGHT: Content Cards -->
+      <section class="dash-right">
+
+        <div class="dash-card">
+          <h2>About Me</h2>
+          <p>
+            I’m a Data Analytics Engineering graduate student at George Mason University focused on predictive modeling,
+            forecasting, and building dashboards that drive decision-making.
+          </p>
+        </div>
+
+        <div class="dash-card">
+          <h2>Skills</h2>
+          <p style="opacity:.75; margin-top:-6px;">Tools, resources, and technologies I use often</p>
+          <div class="projects-filters" style="margin-top:12px;">
+            <span class="pill active">Python</span>
+            <span class="pill">R</span>
+            <span class="pill">SQL</span>
+            <span class="pill">Machine Learning</span>
+            <span class="pill">Tableau</span>
+            <span class="pill">Power BI</span>
+            <span class="pill">AWS</span>
+          </div>
+        </div>
+
+        <div class="dash-card">
+          <h2>Highlights</h2>
+          <ul>
+            <li><strong>120K+</strong> records analyzed; improved data quality by <strong>30%</strong>; reduced reporting time by <strong>40%</strong></li>
+            <li>Forecasting &amp; optimization work that improved outcomes by <strong>10–15%</strong></li>
+            <li>ML projects with strong predictive performance (R² up to <strong>0.85</strong>)</li>
+          </ul>
+        </div>
+
+        <div class="dash-card">
+          <h2>Featured Projects</h2>
+          <p style="opacity:.8;">Start here, then see the full list on the Projects page.</p>
+          <ul>
+            <li><a href="{{ '/projects/disasterlens/' | relative_url }}">DisasterLens — Global Disaster Analysis</a></li>
+            <li><a href="{{ '/projects/garment-worker-productivity/' | relative_url }}">Garment Worker Productivity Analysis</a></li>
+            <li><a href="{{ '/projects/restaurant-revenue-prediction/' | relative_url }}">Restaurant Revenue Prediction</a></li>
+          </ul>
+        </div>
+
+      </section>
     </div>
-
-    <div class="dash__actions">
-      <a href="/projects/" class="btn btn--primary">Projects</a>
-      <a href="/resume/" class="btn btn--inverse">Resume</a>
-      <a href="/contact/" class="btn btn--inverse">Contact</a>
-    </div>
-  </section>
-
-  <!-- GRID -->
-  <section class="dash__grid">
-
-    <div class="dash__card">
-      <h2 class="dash__h2">About Me</h2>
-      <p>
-        I’m a Data Analytics Engineering graduate student at George Mason University
-        focused on predictive modeling, forecasting, and building dashboards that
-        drive decision-making.
-      </p>
-    </div>
-
-    <div class="dash__card">
-      <h2 class="dash__h2">What I Build</h2>
-      <ul>
-        <li>Predictive models and interpretable ML</li>
-        <li>SQL analytics and reproducible pipelines</li>
-        <li>Interactive dashboards and data storytelling</li>
-      </ul>
-    </div>
-
-    <div class="dash__card">
-      <h2 class="dash__h2">Highlights</h2>
-      <ul>
-        <li><strong>120K+</strong> records analyzed; improved data quality by <strong>30%</strong></li>
-        <li>Reduced reporting time by <strong>40%</strong></li>
-        <li>Forecasting & optimization improved outcomes by <strong>10–15%</strong></li>
-        <li>ML projects with R² up to <strong>0.85</strong></li>
-      </ul>
-    </div>
-
-  </section>
-
+  </div>
 </div>
