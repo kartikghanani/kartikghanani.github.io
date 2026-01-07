@@ -13,6 +13,7 @@ minimal_mistakes_skin: "dark"
 include: ["_pages"]
 
 author:
+  avatar: "/assets/images/avatar.jpg"
   name: "Kartik Ghanani"
   bio: "MS Data Analytics Engineering @ George Mason University (GPA 3.5). Data Analyst focused on forecasting, ML, and dashboards."
   location: "Fairfax, VA"
