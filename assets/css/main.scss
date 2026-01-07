@@ -5,29 +5,79 @@
 $mm-skin: "dark";
 @import "minimal-mistakes";
 
-/* Modern font + cleaner sizing */
+/* =========================
+   Base typography + layout
+   ========================= */
 html { font-size: 17px; }
+
 body {
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial,
+    "Apple Color Emoji", "Segoe UI Emoji";
   line-height: 1.65;
+
+  /* True dark background */
+  background: #0b0f14;
+  color: rgba(255,255,255,0.88);
 }
 
-/* Make headings a bit tighter and modern */
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+/* Make headings tighter + modern */
+h1, h2, h3 { letter-spacing: -0.02em; }
+
+/* =========================
+   Center content like modern sites
+   ========================= */
+.initial-content,
+.page__content,
+.archive,
+.page__inner-wrap,
+.layout--home .page__content,
+.layout--single .page__content {
+  max-width: 1100px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
-/* Wider content like modern personal sites */
-.page__content, .archive, .initial-content {
-  max-width: 980px;
+/* Keep background clean (no white blocks) */
+.page__content,
+.initial-content,
+.archive {
+  background: transparent;
 }
 
-/* Cleaner nav */
-.greedy-nav a {
-  font-weight: 600;
+/* Mobile padding so it doesn’t touch edges */
+@media (max-width: 768px) {
+  .initial-content,
+  .page__content,
+  .archive,
+  .page__inner-wrap {
+    padding-left: 18px !important;
+    padding-right: 18px !important;
+  }
 }
 
-/* Card-like feel for default archive lists */
+/* =========================
+   Nav + Footer
+   ========================= */
+.greedy-nav a { font-weight: 600; }
+
+.greedy-nav {
+  background: rgba(11,15,20,0.85);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+  backdrop-filter: blur(8px);
+}
+
+.page__footer {
+  background: transparent;
+  border-top: 1px solid rgba(255,255,255,0.10);
+}
+
+/* Links */
+a { color: rgba(255,255,255,0.9); }
+a:hover { color: #ffffff; }
+
+/* =========================
+   Archive cards (default lists)
+   ========================= */
 .archive__item {
   border: 1px solid rgba(255,255,255,0.10);
   border-radius: 16px;
@@ -36,10 +86,10 @@ h1, h2, h3 {
   background: rgba(255,255,255,0.04);
 }
 
-/* === Projects Grid (dark modern cards) === */
-.projects-wrap {
-  padding: 2rem 0 3rem;
-}
+/* =========================
+   Projects Grid (dark modern cards)
+   ========================= */
+.projects-wrap { padding: 2rem 0 3rem; }
 
 .projects-title {
   font-size: 2.2rem;
@@ -135,28 +185,4 @@ h1, h2, h3 {
   font-weight: 700;
   font-size: .85rem;
   opacity: .9;
-}
-
-/* === Force true dark site background (whole site) === */
-body {
-  background: #0b0f14;
-  color: rgba(255,255,255,0.88);
-}
-
-.page__content, .initial-content, .archive {
-  background: transparent;
-}
-
-a { color: rgba(255,255,255,0.9); }
-a:hover { color: #ffffff; }
-
-.page__footer {
-  background: transparent;
-  border-top: 1px solid rgba(255,255,255,0.10);
-}
-
-.greedy-nav {
-  background: rgba(11,15,20,0.85);
-  border-bottom: 1px solid rgba(255,255,255,0.10);
-  backdrop-filter: blur(8px);
 }
