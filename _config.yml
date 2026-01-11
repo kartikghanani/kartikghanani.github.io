@@ -1,6 +1,7 @@
 title: "Kartik Ghanani"
 description: "Data Analyst & Analytics Engineer | MS Data Analytics Engineering @ GMU | Python • R • SQL • ML • Visualization"
 url: "https://kartikghanani.github.io"
+baseurl: ""   # IMPORTANT for GitHub Pages user site
 
 remote_theme: "mmistakes/minimal-mistakes"
 
@@ -13,8 +14,8 @@ minimal_mistakes_skin: "dark"
 include: ["_pages"]
 
 author:
-  avatar: "/assets/images/avatar.jpg"
   name: "Kartik Ghanani"
+  avatar: "/assets/images/avatar.jpg"
   bio: "MS Data Analytics Engineering @ George Mason University (GPA 3.5). Data Analyst focused on forecasting, ML, and dashboards."
   location: "Fairfax, VA"
   links:
