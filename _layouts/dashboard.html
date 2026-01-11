@@ -3,54 +3,39 @@ layout: default
 ---
 
 <div class="dash">
-  <div class="dash__container">
+  <div class="dash__grid">
 
-    <div class="dash-grid">
-
-      <!-- LEFT: Profile card -->
-      <aside class="dash-left">
-        <div class="dash-card profile-card">
-
-          {% assign avatar_url = site.author.avatar | default: "/assets/images/avatar.jpg" %}
-
-          {% if site.author.avatar %}
-            <img class="avatar" src="{{ avatar_url | relative_url }}" alt="{{ site.author.name }}">
-          {% else %}
-            <div class="avatar avatar--placeholder" aria-label="{{ site.author.name }}">
-              {{ site.author.name | slice: 0, 1 }}
-            </div>
-          {% endif %}
-
-          <h1 class="profile-name">{{ site.author.name }}</h1>
-
-          <p class="profile-sub">
-            {{ site.description }}
-          </p>
-
-          <div class="cta-row">
-            <a class="btnx btnx--light" href="{{ '/resume/' | relative_url }}">Resume</a>
-            <a class="btnx btnx--dark" href="{{ '/contact/' | relative_url }}">Contact Me</a>
-          </div>
-
-          <div class="icon-row">
-            {% if site.author.links %}
-              {% for link in site.author.links %}
-                <a class="icon-btn" href="{{ link.url }}" target="_blank" rel="noopener" aria-label="{{ link.label }}">
-                  <i class="{{ link.icon }}"></i>
-                </a>
-              {% endfor %}
-            {% endif %}
-          </div>
-
+    <!-- Left profile card -->
+    <aside class="dash__left">
+      <div class="dash__card dash__profile">
+        <div class="dash__avatar">
+          <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}">
         </div>
-      </aside>
 
-      <!-- RIGHT: Page content -->
-      <section class="dash-right">
-        {{ content }}
-      </section>
+        <h1 class="dash__name">{{ site.author.name }}</h1>
+        <p class="dash__subtitle">{{ site.description }}</p>
 
-    </div>
+        <div class="dash__actions">
+          <a class="dash__btn dash__btn--primary" href="{{ '/resume/' | relative_url }}">Resume</a>
+          <a class="dash__btn" href="{{ '/contact/' | relative_url }}">Contact Me</a>
+        </div>
+
+        <div class="dash__social">
+          {% if site.author.links %}
+            {% for link in site.author.links %}
+              <a class="dash__icon" href="{{ link.url }}" target="_blank" rel="noopener">
+                <i class="{{ link.icon }}"></i>
+              </a>
+            {% endfor %}
+          {% endif %}
+        </div>
+      </div>
+    </aside>
+
+    <!-- Right content cards -->
+    <section class="dash__right">
+      {{ content }}
+    </section>
 
   </div>
 </div>
