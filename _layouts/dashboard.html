@@ -9,7 +9,10 @@ layout: default
     <aside class="dash__left">
       <div class="dash__card dash__profile">
         <div class="dash__avatar">
-          <img src="{{ site.author.avatar | relative_url }}" alt="{{ site.author.name }}">
+          <img
+            src="{{ site.author.avatar | default: '/assets/images/avatar.jpg' | relative_url }}"
+            alt="{{ site.author.name }}"
+          >
         </div>
 
         <h1 class="dash__name">{{ site.author.name }}</h1>
