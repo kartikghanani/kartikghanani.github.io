@@ -374,3 +374,57 @@ a:hover { color: #ffffff; }
   grid-template-columns: 380px minmax(0, 1fr);
   gap: 26px;
 }
+
+/* ===== Home: prevent any hero/header image from taking over ===== */
+.layout--home .page__hero,
+.layout--home .page__hero--overlay {
+  display: none !important;
+}
+
+/* ===== Dashboard alignment + width ===== */
+.dash {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.2rem 1.25rem 3.5rem;
+}
+
+.dash__grid {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 26px;
+  align-items: start;
+}
+
+@media (min-width: 980px) {
+  .dash__left {
+    position: sticky;
+    top: 92px;
+    align-self: start;
+  }
+}
+
+@media (max-width: 979px) {
+  .dash__grid { grid-template-columns: 1fr; }
+  .dash__left { position: static; }
+}
+
+/* Right side spacing */
+.dash__right > * + * { margin-top: 18px; }
+
+/* Card helpers for your right side */
+.dash__h2 { margin: 0 0 .5rem; }
+.dash__muted { margin: 0 0 .9rem; opacity: .75; }
+.dash__list { margin: 0; padding-left: 1.1rem; }
+
+/* Skills chips */
+.dash__chips { display: flex; flex-wrap: wrap; gap: .6rem; }
+.dash__chip {
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.06);
+  color: rgba(255,255,255,.88);
+  padding: .45rem .75rem;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: .92rem;
+}
+
