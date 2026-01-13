@@ -352,3 +352,25 @@ a:hover { color: #ffffff; }
   font-size: .85rem;
   opacity: .9;
 }
+
+/* ====== FIX: widen + align dashboard like reference ====== */
+
+/* Wider site container */
+.initial-content,
+.page__content,
+.archive,
+.page__inner-wrap {
+  max-width: 1280px !important;
+}
+
+/* Wider home dashboard container */
+.dash {
+  max-width: 1280px !important;
+  padding: 2.2rem 1.25rem 3.5rem; /* slightly tighter top like reference */
+}
+
+/* Left card + right column proportions closer to reference */
+.dash__grid {
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: 26px;
+}
