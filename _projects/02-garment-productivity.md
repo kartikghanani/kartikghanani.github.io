@@ -1,23 +1,19 @@
 ---
 title: "Garment Worker Productivity Analysis"
-excerpt: "Voting Regressor achieved R²=0.8117; used SHAP + PCA to explain key productivity drivers."
-order: 2
-year: 2025
-tags: ["Python", "ML", "SHAP"]
+permalink: /projects/garment-worker-productivity/
+layout: single
+featured: true
+tech: ["Python", "Scikit-learn", "SHAP", "PCA"]
+excerpt: "Predict worker productivity and explain performance drivers using interpretable ML."
 ---
 
-
 ## Overview
-Predicted worker productivity for an apparel manufacturer and explained key drivers using interpretable ML.
+Forecast worker productivity for an apparel manufacturer and identify the key factors behind performance.
 
-## What I Did
-- Engineered an ensemble **Voting Regressor** achieving **R² = 0.8117**.
-- Built a classifier to identify underperforming workers (**75% accuracy**).
-- Used **SHAP** and **PCA** to explain drivers (incentives, overtime, etc.).
+## What I did
+- Achieved predictive accuracy of R² 0.8117 in forecasting worker productivity for an apparel manufacturer by engineering an ensemble Voting Regressor that outperformed 6 other machine learning models, including boosting and tree-based algorithms.:contentReference[oaicite:2]{index=2}  
+- Achieved predictive accuracy of R² 0.8117 in forecasting worker productivity for an apparel manufacturer by engineering an ensemble Voting Regressor that outperformed 6 other machine learning models, including boosting and tree-based algorithms. :contentReference[oaicite:3]{index=3}  
 
-## Tech Stack
+## Tech stack
 Python, Scikit-learn, SHAP, PCA
 
-## Links
-- GitHub: (add link)
-- Report: (optional)
