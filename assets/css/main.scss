@@ -773,5 +773,37 @@ a:hover{ color:#fff; }
   font-size: .92rem;
 }
 
+/* =========================
+   Skills page polish
+   ========================= */
+.skills-page .page__title,
+.skills-page .page__meta,
+.skills-page .page__lead {
+  display: none !important; /* removes the extra “Skills” above */
+}
+
+/* Make your on-page heading match the reference */
+.skills-page .page__content h1 {
+  font-size: 2.6rem;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+}
+
+/* Make section headings stronger */
+.skills-page .page__content h2 {
+  font-size: 1.25rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+/* Shift the whole content slightly left on wide screens (like the reference feel) */
+@media (min-width: 1100px) {
+  .skills-page .page__inner-wrap {
+    transform: translateX(-50px);
+  }
+}
+
 
 
