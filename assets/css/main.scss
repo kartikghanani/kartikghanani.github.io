@@ -736,4 +736,42 @@ a:hover{ color:#fff; }
   line-height: 1.35;
 }
 
+/* Skills page: ensure truly centered and wide */
+.page__content .skills-wrap{
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+/* Make "Core Stack" items pop */
+.skill-item--core{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.18);
+}
+
+/* Better logo sizing for FontAwesome icons */
+.skill-icon i{
+  font-size: 20px;
+  opacity: .95;
+}
+
+/* Pills for analytics methods */
+.skills-pills{
+  display:flex;
+  flex-wrap:wrap;
+  gap: .6rem;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+
+.pillx{
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.18);
+  color: rgba(255,255,255,.88);
+  padding: .45rem .75rem;
+  border-radius: 999px;
+  font-weight: 750;
+  font-size: .92rem;
+}
+
+
 
