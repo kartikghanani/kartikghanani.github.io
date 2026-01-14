@@ -1,0 +1,61 @@
+daily:
+  - name: Python
+    icon: https://cdn.simpleicons.org/python/3776AB
+    note: NumPy • Pandas • SciPy • scikit-learn
+
+  - name: R
+    icon: https://cdn.simpleicons.org/r/276DC3
+    note: ggplot2 • dplyr • tidyr • lubridate
+
+  - name: SQL
+    icon: https://cdn.simpleicons.org/mysql/4479A1
+    note: MySQL • PostgreSQL • SQL Server
+
+  - name: AWS
+    icon: https://cdn.simpleicons.org/amazonaws/FF9900
+    note: EC2 • S3 • Glue (and more)
+
+  - name: Tableau
+    icon: https://cdn.simpleicons.org/tableau/E97627
+    note: Dashboards • Storytelling • BI
+
+  - name: Power BI
+    icon: https://cdn.simpleicons.org/powerbi/F2C811
+    note: DAX • Reports • Modeling
+
+  - name: Excel
+    icon: https://cdn.simpleicons.org/microsoftexcel/217346
+    note: Pivot Tables • Solver • What-If
+
+  - name: GitHub
+    icon: https://cdn.simpleicons.org/github/FFFFFF
+    note: Version control • Collaboration
+
+  - name: Jupyter
+    icon: https://cdn.simpleicons.org/jupyter/F37626
+    note: Notebooks • Prototyping
+
+other:
+  - name: MongoDB
+    icon: https://cdn.simpleicons.org/mongodb/47A248
+    note: NoSQL (foundational)
+
+  - name: DynamoDB
+    icon: https://cdn.simpleicons.org/amazondynamodb/4053D6
+    note: NoSQL (foundational)
+
+  - name: Plotly
+    icon: https://cdn.simpleicons.org/plotly/3F4F75
+    note: Interactive charts
+
+  - name: Leaflet
+    icon: https://cdn.simpleicons.org/leaflet/199900
+    note: Geospatial visualization
+
+  - name: PostgreSQL
+    icon: https://cdn.simpleicons.org/postgresql/4169E1
+    note: Relational database
+
+  - name: SQL Server
+    icon: https://cdn.simpleicons.org/microsoftsqlserver/CC2927
+    note: Relational database
