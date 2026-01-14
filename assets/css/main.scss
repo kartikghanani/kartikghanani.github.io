@@ -438,3 +438,86 @@ a:hover{ color:#fff; }
   font-size:.85rem;
   opacity:.9;
 }
+
+
+/* =========================
+   NAVBAR — force reference look
+   ========================= */
+
+/* Kill ALL possible title elements (theme variants) */
+.masthead__menu .site-title,
+.masthead__menu .site-title-wrap,
+.masthead__menu .site-logo,
+.masthead__menu .site-title__text,
+.masthead__menu .site-title a,
+.greedy-nav .site-title,
+.greedy-nav .site-title a,
+.greedy-nav .site-logo,
+.masthead .site-title,
+.masthead .site-title a {
+  display: none !important;
+}
+
+/* Remove hamburger / greedy toggle everywhere */
+.greedy-nav__toggle,
+.greedy-nav .greedy-nav__toggle,
+.masthead__menu .greedy-nav__toggle {
+  display: none !important;
+}
+
+/* Remove search icon if it exists */
+.search__toggle,
+.greedy-nav .search__toggle,
+.masthead__menu .search__toggle {
+  display: none !important;
+}
+
+/* Make navbar a true centered row */
+.masthead__menu .greedy-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Center the links group */
+.masthead__menu .greedy-nav .visible-links {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  position: static !important;
+  transform: none !important;
+}
+
+/* Make sure no left/right blocks push layout */
+.masthead__menu .greedy-nav > ul,
+.masthead__menu .greedy-nav > .navicon,
+.masthead__menu .greedy-nav > .search__toggle {
+  margin: 0 !important;
+}
+
+/* Nav styling like reference */
+.masthead__menu .greedy-nav a {
+  font-weight: 600 !important;
+  opacity: .88 !important;
+  padding: 0.95rem 0.2rem !important;
+}
+.masthead__menu .greedy-nav a:hover {
+  opacity: 1 !important;
+}
+
+/* Mobile: allow wrap (don’t break layout) */
+@media (max-width: 900px) {
+  .masthead__menu .greedy-nav {
+    justify-content: center !important;
+  }
+  .masthead__menu .greedy-nav .visible-links {
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+}
+
