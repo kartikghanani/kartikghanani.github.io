@@ -1,13 +1,15 @@
 ---
 ---
 
-/* Minimal Mistakes */
+/* Minimal Mistakes base */
 $mm-skin: "dark";
 @import "minimal-mistakes";
 
-/* =========================
-   Premium dark theme (reference-like)
-   ========================= */
+/* =========================================================
+   Premium dark theme + dashboard (FULL main.scss)
+   ========================================================= */
+
+/* Theme tokens */
 :root{
   --bg: #0b0f14;
   --bg2:#070a0f;
@@ -25,6 +27,7 @@ $mm-skin: "dark";
   --radius: 20px;
 }
 
+/* Base typography + background */
 html{ font-size: 17px; }
 
 body{
@@ -36,6 +39,7 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
+  /* depth like reference */
   background:
     radial-gradient(900px 700px at 20% 10%, rgba(255,255,255,.06), transparent 60%),
     radial-gradient(900px 700px at 80% 0%, rgba(120,160,255,.05), transparent 62%),
@@ -51,9 +55,9 @@ h3{ font-weight: 800; }
 a{ color: rgba(255,255,255,.90); }
 a:hover{ color:#fff; }
 
-/* =========================
-   Global container (all pages)
-   ========================= */
+/* =========================================================
+   Global container width (all pages)
+   ========================================================= */
 .initial-content,
 .page__content,
 .archive,
@@ -73,11 +77,12 @@ a:hover{ color:#fff; }
   }
 }
 
-/* =========================
-   NAVBAR – centered links (WORKING, no absolute)
-   ========================= */
-
-/* Keep masthead wide + centered */
+/* =========================================================
+   NAVBAR — match reference
+   - remove name from navbar
+   - remove hamburger
+   - center menu links
+   ========================================================= */
 .masthead__inner-wrap{
   max-width: 1280px;
   margin: 0 auto;
@@ -85,73 +90,67 @@ a:hover{ color:#fff; }
   padding-right: 22px;
 }
 
-/* Premium navbar background */
+/* Premium glass bar */
 .greedy-nav{
   background: rgba(9,12,18,.72);
   border-bottom: 1px solid rgba(255,255,255,.10);
   backdrop-filter: blur(10px);
+}
 
+/* Remove left title ("Kartik Ghanani") */
+.masthead .site-title{
+  display: none !important;
+}
+
+/* Remove hamburger / greedy toggle */
+.masthead .greedy-nav__toggle{
+  display: none !important;
+}
+
+/* Remove search icon if it exists */
+.masthead .search__toggle{
+  display: none !important;
+}
+
+/* Center the visible links */
+.masthead .greedy-nav{
   display: flex;
   align-items: center;
+  justify-content: center;
 }
 
-/* Site title stays left */
-.greedy-nav .site-title{
-  flex: 0 0 auto;
-  margin-right: 18px;
-  font-weight: 700;
-  color: rgba(255,255,255,.86);
-}
-
-/* THIS centers the nav items safely */
-.greedy-nav .visible-links{
-  flex: 0 1 auto;
-  margin-left: auto;
-  margin-right: auto;
-
-  display: flex;
+/* Ensure the links row stays centered */
+.masthead .greedy-nav .visible-links{
+  margin: 0 !important;
+  display: flex !important;
+  justify-content: center;
   align-items: center;
-  gap: 32px;
+  gap: 34px;
+  flex-wrap: nowrap;
+  width: auto;
 }
 
-/* Nav links look */
-.greedy-nav .visible-links a{
-  font-weight: 650;
-  color: rgba(255,255,255,.82);
-  padding: 0.85rem 0.15rem;
-  opacity: .92;
+/* Link style like reference */
+.masthead .greedy-nav .visible-links a{
+  font-weight: 600;
+  opacity: .88;
+  padding: 0.95rem 0.2rem;
 }
-.greedy-nav .visible-links a:hover{
-  color: #fff;
+.masthead .greedy-nav .visible-links a:hover{
   opacity: 1;
 }
 
-/* Right-side buttons stay right (toggle/search) */
-.greedy-nav .greedy-nav__toggle,
-.greedy-nav .search__toggle{
-  flex: 0 0 auto;
-  margin-left: auto;
-}
-
-/* Mobile: revert to normal (Greedy nav collapses) */
-@media (max-width: 900px){
-  .greedy-nav .visible-links{
-    margin-left: 0;
-    margin-right: 0;
-    gap: 14px;
-    justify-content: flex-start;
-  }
-}
-
-/* Footer */
+/* =========================================================
+   Footer
+   ========================================================= */
 .page__footer{
   background: transparent;
   border-top: 1px solid rgba(255,255,255,.10);
 }
 
-/* =========================
+/* =========================================================
    Home cleanup (remove default title + hero)
-   ========================= */
+   ========================================================= */
 .layout--home .page__title,
 .layout--home .page__lead,
 .layout--home .page__meta{
@@ -163,57 +162,54 @@ a:hover{ color:#fff; }
   display:none !important;
 }
 
-/* =========================
-   DASHBOARD (Home)
-   Uses: .dash .dash__grid .dash__left .dash__right .dash__card
-   ========================= */
+/* =========================================================
+   DASHBOARD (Home) — the cards layout you built
+   Uses your layout HTML:
+   .dash -> .dash__grid -> (.dash__left + .dash__right)
+   ========================================================= */
 .dash{
   max-width: 1280px;
   margin: 0 auto;
   padding: 2.2rem 1.25rem 3.5rem;
 }
 
-/* 2 columns like reference */
 .dash__grid{
-  display:grid;
+  display: grid;
   grid-template-columns: 380px minmax(0, 1fr);
   gap: 26px;
-  align-items:start;
+  align-items: start;
 }
 
-/* mobile stack */
 @media (max-width: 979px){
   .dash__grid{ grid-template-columns: 1fr; }
   .dash__left{ position: static; }
 }
 
-/* sticky left card on desktop */
 @media (min-width: 980px){
   .dash__left{
     position: sticky;
     top: 92px;
-    align-self:start;
+    align-self: start;
   }
 }
 
-/* spacing between right cards */
-.dash__right > * + *{ margin-top: 18px; }
+.dash__right > * + *{
+  margin-top: 18px;
+}
 
-/* Cards */
+/* Card base */
 .dash__card{
   border-radius: var(--radius);
   border: 1px solid var(--border);
   background: linear-gradient(180deg, var(--cardA) 0%, var(--cardB) 100%);
   box-shadow: var(--shadow2);
   padding: 22px;
-
   position: relative;
   overflow: hidden;
-
   transition: transform .14s ease, border-color .14s ease, background .14s ease;
 }
 
-/* subtle top highlight line */
+/* subtle highlight line like reference */
 .dash__card::before{
   content:"";
   position:absolute;
@@ -229,35 +225,34 @@ a:hover{ color:#fff; }
 
 .dash__card:hover{
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,.18);
-  background: linear-gradient(180deg, rgba(255,255,255,.095) 0%, rgba(255,255,255,.04) 100%);
+  border-color: rgba(255,255,255,.16);
+  background: linear-gradient(180deg, rgba(255,255,255,.095) 0%, rgba(255,255,255,.045) 100%);
   box-shadow: var(--shadow);
 }
 
-/* Profile card */
+/* Left profile card */
 .dash__profile{
-  text-align:center;
+  text-align: center;
   padding: 24px 22px;
 }
 
-/* Avatar */
 .dash__avatar{
   width: 170px;
   height: 170px;
   margin: 0 auto 14px;
   border-radius: 999px;
-  overflow:hidden;
+  overflow: hidden;
   border: 2px solid rgba(255,255,255,.16);
   box-shadow: 0 22px 70px rgba(0,0,0,.65);
 }
+
 .dash__avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-/* Profile text */
 .dash__name{
   margin: 0 0 8px;
   font-size: 2rem;
@@ -267,38 +262,35 @@ a:hover{ color:#fff; }
 
 .dash__subtitle{
   margin: 0 0 16px;
-  color: rgba(255,255,255,.62);
+  color: var(--muted);
   font-size: .98rem;
   line-height: 1.5;
 }
 
 /* Buttons */
 .dash__actions{
-  display:grid;
+  display: grid;
   gap: 10px;
   margin: 14px 0 14px;
 }
 
 .dash__btn{
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   height: 48px;
   border-radius: 14px;
-
-  border: 1px solid rgba(255,255,255,.14);
+  border: 1px solid rgba(255,255,255,.12);
   background: rgba(0,0,0,.22);
   color: rgba(255,255,255,.92) !important;
-
-  text-decoration:none !important;
+  text-decoration: none !important;
   font-weight: 900;
-
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
 
 .dash__btn:hover{
   transform: translateY(-1px);
-  background: rgba(255,255,255,.07);
+  background: rgba(0,0,0,.28);
   border-color: rgba(255,255,255,.22);
 }
 
@@ -312,8 +304,8 @@ a:hover{ color:#fff; }
 
 /* Social icons */
 .dash__social{
-  display:flex;
-  justify-content:center;
+  display: flex;
+  justify-content: center;
   gap: 12px;
   margin-top: 12px;
 }
@@ -322,15 +314,13 @@ a:hover{ color:#fff; }
   width: 46px;
   height: 46px;
   border-radius: 14px;
-
-  display:inline-flex;
-  justify-content:center;
-  align-items:center;
-
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: 1px solid rgba(255,255,255,.12);
   background: rgba(255,255,255,.05);
-  text-decoration:none !important;
-
+  color: rgba(255,255,255,.92);
+  text-decoration: none !important;
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
 
@@ -342,7 +332,7 @@ a:hover{ color:#fff; }
 
 .dash__icon i{ font-size: 18px; }
 
-/* Headings + muted text in right cards */
+/* Right cards text */
 .dash__h2{
   margin: 0 0 .55rem;
   font-size: 1.18rem;
@@ -356,13 +346,39 @@ a:hover{ color:#fff; }
   font-size: .95rem;
 }
 
-/* Lists */
 .dash__list{
   margin: .6rem 0 0;
   padding-left: 1.1rem;
 }
 .dash__list li{ margin: .45rem 0; }
 
+/* Skills chips */
+.dash__chips{
+  display: flex;
+  flex-wrap: wrap;
+  gap: .55rem;
+}
+
+.dash__chip{
+  display: inline-flex;
+  align-items: center;
+  padding: .40rem .70rem;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.20);
+  color: rgba(255,255,255,.88);
+  font-weight: 800;
+  font-size: .90rem;
+}
+
+/* First chip "active" */
+.dash__chip:first-child{
+  background: rgba(255,255,255,.92);
+  color: #0b0f14;
+  border-color: rgba(255,255,255,.92);
+}
+
+/* Featured project links cleaner */
 .dash__list a{
   text-decoration: none !important;
   border-bottom: 1px solid rgba(255,255,255,.18);
@@ -371,71 +387,13 @@ a:hover{ color:#fff; }
   border-bottom-color: rgba(255,255,255,.45);
 }
 
-/* Chips */
-.dash__chips{
-  display:flex;
-  flex-wrap:wrap;
-  gap: .55rem;
-}
-
-.dash__chip{
-  display:inline-flex;
-  align-items:center;
-  padding: .40rem .70rem;
-
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.14);
-
-  background: rgba(0,0,0,.20);
-  color: rgba(255,255,255,.88);
-
-  font-weight: 800;
-  font-size: .90rem;
-}
-
-/* first chip highlighted like reference */
-.dash__chip:first-child{
-  background: rgba(255,255,255,.92);
-  color: #0b0f14;
-  border-color: rgba(255,255,255,.92);
-}
-
-/* =========================
-   Projects page (keep your existing look)
-   ========================= */
+/* =========================================================
+   Projects grid (optional — keep your existing look)
+   ========================================================= */
 .projects-wrap{ padding: 2rem 0 3rem; }
 
-.projects-title{
-  font-size: 2.2rem;
-  margin: 0 0 1rem;
-  letter-spacing: -0.02em;
-}
-
-.projects-filters{
-  display:flex;
-  flex-wrap:wrap;
-  gap:.6rem;
-  margin:1rem 0 1.8rem;
-}
-
-.pill{
-  border: 1px solid rgba(255,255,255,.16);
-  background: rgba(255,255,255,.06);
-  color: rgba(255,255,255,.88);
-  padding: .45rem .75rem;
-  border-radius: 999px;
-  font-weight: 700;
-  font-size: .92rem;
-  cursor:pointer;
-}
-.pill.active{
-  background: rgba(255,255,255,.92);
-  color:#111;
-  border-color: rgba(255,255,255,.92);
-}
-
 .projects-grid{
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(2, minmax(0,1fr));
   gap: 1.2rem;
 }
