@@ -619,3 +619,121 @@ a:hover{ color:#fff; }
   margin-top: 0 !important;
 }
 
+/* =========================
+   SKILLS PAGE (reference style)
+   ========================= */
+.skills-wrap{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2.2rem 1.25rem 3.5rem;
+}
+
+.skills-title{
+  font-size: 2.2rem;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  margin: 0 0 1.2rem;
+}
+
+.skills-card{
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: linear-gradient(180deg, rgba(255,255,255,.085) 0%, rgba(255,255,255,.035) 100%);
+  box-shadow: 0 18px 55px rgba(0,0,0,.55);
+  padding: 22px;
+  position: relative;
+  overflow: hidden;
+}
+
+.skills-card::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,.22) 25%,
+    rgba(255,255,255,.08) 70%,
+    transparent 100%);
+  opacity: .9;
+}
+
+.skills-card__head{
+  display:flex;
+  align-items:flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.skills-card h2{
+  margin: 0 0 6px;
+  font-size: 1.25rem;
+  font-weight: 950;
+  letter-spacing: -0.02em;
+}
+
+.skills-card p{
+  margin: 0;
+  color: rgba(255,255,255,.62);
+  font-size: .95rem;
+}
+
+.skills-grid{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px 26px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255,255,255,.10);
+}
+
+@media (max-width: 1050px){
+  .skills-grid{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+}
+@media (max-width: 680px){
+  .skills-grid{ grid-template-columns: 1fr; }
+}
+
+.skill-item{
+  display:flex;
+  align-items:center;
+  gap: 14px;
+  padding: 10px 8px;
+  border-radius: 14px;
+}
+
+.skill-icon{
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display:grid;
+  place-items:center;
+  background: rgba(0,0,0,.22);
+  border: 1px solid rgba(255,255,255,.10);
+  flex: 0 0 auto;
+}
+
+.skill-icon img{
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display:block;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+}
+
+.skill-text{ min-width: 0; }
+
+.skill-name{
+  font-weight: 900;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.skill-sub{
+  margin-top: 3px;
+  font-size: .9rem;
+  color: rgba(255,255,255,.62);
+  line-height: 1.35;
+}
+
+
