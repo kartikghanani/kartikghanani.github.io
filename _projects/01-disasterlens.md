@@ -11,8 +11,8 @@ excerpt: "Forecast disaster fatalities and uncover global impact clusters with M
 DisasterLens is a global disaster analytics project that forecasts disaster fatalities and groups disasters into meaningful impact clusters.
 
 ## What I did
-- Achieved predictive accuracy of R² 0.8117 in forecasting worker productivity for an apparel manufacturer by engineering an ensemble Voting Regressor that outperformed 6 other machine learning models, including boosting and tree-based algorithms.  
-- Identified underperforming workers by deploying a logistic regression classifier with 75% accuracy, leveraging SHAP and PCA to provide actionable insights on key performance drivers like financial incentives and overtime.
+- Engineered a predictive model using Python and Scikit-learn to forecast disaster fatalities with 85% accuracy (R² = 0.85), deploying the full project workflow with Docker and version control using Git/GitHub.  
+- Applied HDBSCAN clustering and geospatial visualisation to identify 19+ distinct disaster impact clusters globally, providing data-driven policy recommendations for targeted intervention and resource prioritisation.
 
 ## Tech stack
 Python, Scikit-learn, HDBSCAN, Docker, Git/GitHub
