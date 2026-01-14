@@ -2,7 +2,7 @@
 layout: single
 permalink: /skills/
 title: "Skills"
-classes: wide
+classes: wide skills-page
 ---
 
 <div class="skills-wrap">
