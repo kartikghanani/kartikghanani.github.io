@@ -1,6 +1,5 @@
 ---
 title: "Restaurant Revenue Prediction"
-permalink: /projects/restaurant-revenue-prediction/
 layout: single
 featured: true
 tech: ["R", "SQL", "Regression"]
@@ -11,9 +10,8 @@ excerpt: "Predict restaurant revenue and identify statistically significant prof
 Predict restaurant revenue from business attributes and identify key drivers for optimization.
 
 ## What I did
-- Engineered a predictive model to forecast restaurant revenue from 17 business attributes by refining a multiple linear regression with interaction terms, boosting its accuracy to an adjusted   R-squared of 0.982.
-- Identified key profit drivers for 8,368 restaurants by analysing 17 business attributes, determining with high statistical significance (p < 0.01) that seating capacity and average meal price were the primary influencers for business optimisation.
+- Improved a regression model with interaction terms to **adjusted R² = 0.982**.
+- Analyzed **8,368 restaurants** and found key drivers significant at **p < 0.01**.
 
 ## Tech stack
 R, SQL, Multiple Linear Regression
-
