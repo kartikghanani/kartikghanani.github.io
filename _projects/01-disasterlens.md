@@ -1,23 +1,18 @@
 ---
 title: "DisasterLens — Global Disaster Analysis"
-excerpt: "Predict disaster fatalities (R²=0.85) + cluster global impact patterns using HDBSCAN and geospatial visuals."
-order: 1
-year: 2025
-tags: ["Python", "ML", "Clustering", "Geo"]
+permalink: /projects/disasterlens/
+layout: single
+featured: true
+tech: ["Python", "Scikit-learn", "HDBSCAN", "Docker", "GitHub"]
+excerpt: "Forecast disaster fatalities and uncover global impact clusters with ML + geospatial analysis."
 ---
 
-
 ## Overview
-DisasterLens analyzes global disaster patterns and forecasts fatalities using machine learning.
+DisasterLens is a global disaster analytics project that forecasts disaster fatalities and groups disasters into meaningful impact clusters.
 
-## What I Did
-- Built a predictive model in **Python + Scikit-learn** to forecast disaster fatalities (**R² = 0.85**).
-- Applied **HDBSCAN clustering** and geospatial visualization to identify **19+** distinct impact clusters.
-- Packaged the workflow using **Docker** and Git/GitHub.
+## What I did
+- Achieved predictive accuracy of R² 0.8117 in forecasting worker productivity for an apparel manufacturer by engineering an ensemble Voting Regressor that outperformed 6 other machine learning models, including boosting and tree-based algorithms.  
+- Identified underperforming workers by deploying a logistic regression classifier with 75% accuracy, leveraging SHAP and PCA to provide actionable insights on key performance drivers like financial incentives and overtime.
 
-## Tech Stack
-Python, Scikit-learn, HDBSCAN, Plotly/Geo visuals, Docker, Git/GitHub
-
-## Links
-- GitHub: (add link)
-- Report/Demo: (optional)
+## Tech stack
+Python, Scikit-learn, HDBSCAN, Docker, Git/GitHub
