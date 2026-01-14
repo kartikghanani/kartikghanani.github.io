@@ -805,5 +805,26 @@ a:hover{ color:#fff; }
   }
 }
 
+/* =========================
+   Skills page: align content like the reference
+   ========================= */
+
+/* Keep the overall site wide */
+.skills-page .initial-content,
+.skills-page .page__inner-wrap {
+  max-width: 1280px !important;
+}
+
+/* On desktop, make the main Skills content sit a bit left (not perfectly centered) */
+@media (min-width: 1100px) {
+  .skills-page .page__inner-wrap {
+    max-width: 1100px !important;   /* content width */
+    margin-left: 0 !important;       /* push to left */
+    margin-right: auto !important;   /* keep space on right */
+    padding-left: 22px !important;   /* match navbar padding */
+    padding-right: 22px !important;
+  }
+}
+
 
 
