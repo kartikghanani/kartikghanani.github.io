@@ -10,6 +10,12 @@ plugins:
 
 minimal_mistakes_skin: "dark"
 
+# ✅ Hide left navbar title (this removes “Kartik Ghanani” from the masthead)
+masthead_title: ""
+
+# ✅ Optional: remove search icon to match the reference clean nav
+search: false
+
 # Top navigation comes from _data/navigation.yml
 include: ["_pages"]
 
