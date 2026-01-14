@@ -15,12 +15,12 @@ $mm-skin: "dark";
   --text: rgba(255,255,255,.88);
   --muted: rgba(255,255,255,.62);
 
-  --cardA: rgba(255,255,255,.07);
-  --cardB: rgba(255,255,255,.04);
-  --border: rgba(255,255,255,.10);
+  --cardA: rgba(255,255,255,.085);
+  --cardB: rgba(255,255,255,.035);
+  --border: rgba(255,255,255,.12);
 
-  --shadow: 0 14px 44px rgba(0,0,0,.55);
-  --shadow2: 0 10px 30px rgba(0,0,0,.40);
+  --shadow: 0 18px 55px rgba(0,0,0,.55);
+  --shadow2: 0 12px 34px rgba(0,0,0,.42);
 
   --radius: 20px;
 }
@@ -33,7 +33,9 @@ body{
   line-height: 1.65;
   color: var(--text);
 
-  /* depth + glow like reference */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
   background:
     radial-gradient(900px 700px at 20% 10%, rgba(255,255,255,.06), transparent 60%),
     radial-gradient(900px 700px at 80% 0%, rgba(120,160,255,.05), transparent 62%),
@@ -45,6 +47,9 @@ h1,h2,h3{ letter-spacing: -0.03em; }
 h1{ font-weight: 900; }
 h2{ font-weight: 850; }
 h3{ font-weight: 800; }
+
+a{ color: rgba(255,255,255,.90); }
+a:hover{ color:#fff; }
 
 /* =========================
    Global container (all pages)
@@ -69,27 +74,80 @@ h3{ font-weight: 800; }
 }
 
 /* =========================
-   Nav + footer (premium)
+   NAVBAR – centered links (WORKING, no absolute)
    ========================= */
+
+/* Keep masthead wide + centered */
+.masthead__inner-wrap{
+  max-width: 1280px;
+  margin: 0 auto;
+  padding-left: 22px;
+  padding-right: 22px;
+}
+
+/* Premium navbar background */
 .greedy-nav{
   background: rgba(9,12,18,.72);
   border-bottom: 1px solid rgba(255,255,255,.10);
   backdrop-filter: blur(10px);
+
+  display: flex;
+  align-items: center;
 }
 
-.greedy-nav a{
+/* Site title stays left */
+.greedy-nav .site-title{
+  flex: 0 0 auto;
+  margin-right: 18px;
+  font-weight: 700;
+  color: rgba(255,255,255,.86);
+}
+
+/* THIS centers the nav items safely */
+.greedy-nav .visible-links{
+  flex: 0 1 auto;
+  margin-left: auto;
+  margin-right: auto;
+
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+/* Nav links look */
+.greedy-nav .visible-links a{
   font-weight: 650;
   color: rgba(255,255,255,.82);
+  padding: 0.85rem 0.15rem;
+  opacity: .92;
 }
-.greedy-nav a:hover{ color:#fff; }
+.greedy-nav .visible-links a:hover{
+  color: #fff;
+  opacity: 1;
+}
 
+/* Right-side buttons stay right (toggle/search) */
+.greedy-nav .greedy-nav__toggle,
+.greedy-nav .search__toggle{
+  flex: 0 0 auto;
+  margin-left: auto;
+}
+
+/* Mobile: revert to normal (Greedy nav collapses) */
+@media (max-width: 900px){
+  .greedy-nav .visible-links{
+    margin-left: 0;
+    margin-right: 0;
+    gap: 14px;
+    justify-content: flex-start;
+  }
+}
+
+/* Footer */
 .page__footer{
   background: transparent;
   border-top: 1px solid rgba(255,255,255,.10);
 }
-
-a{ color: rgba(255,255,255,.90); }
-a:hover{ color:#fff; }
 
 /* =========================
    Home cleanup (remove default title + hero)
@@ -106,7 +164,7 @@ a:hover{ color:#fff; }
 }
 
 /* =========================
-   DASHBOARD (Home) – single source of truth
+   DASHBOARD (Home)
    Uses: .dash .dash__grid .dash__left .dash__right .dash__card
    ========================= */
 .dash{
@@ -141,28 +199,39 @@ a:hover{ color:#fff; }
 /* spacing between right cards */
 .dash__right > * + *{ margin-top: 18px; }
 
-/* =========================
-   Cards (biggest visual improvement)
-   ========================= */
+/* Cards */
 .dash__card{
   border-radius: var(--radius);
   border: 1px solid var(--border);
-
-  /* glass gradient like reference */
-  background:
-    linear-gradient(180deg, var(--cardA) 0%, var(--cardB) 100%);
-
+  background: linear-gradient(180deg, var(--cardA) 0%, var(--cardB) 100%);
   box-shadow: var(--shadow2);
   padding: 22px;
+
+  position: relative;
+  overflow: hidden;
 
   transition: transform .14s ease, border-color .14s ease, background .14s ease;
 }
 
+/* subtle top highlight line */
+.dash__card::before{
+  content:"";
+  position:absolute;
+  left:0; right:0; top:0;
+  height:1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255,255,255,.22) 25%,
+    rgba(255,255,255,.08) 70%,
+    transparent 100%);
+  opacity: .9;
+}
+
 .dash__card:hover{
   transform: translateY(-2px);
-  border-color: rgba(255,255,255,.16);
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.085) 0%, rgba(255,255,255,.045) 100%);
+  border-color: rgba(255,255,255,.18);
+  background: linear-gradient(180deg, rgba(255,255,255,.095) 0%, rgba(255,255,255,.04) 100%);
+  box-shadow: var(--shadow);
 }
 
 /* Profile card */
@@ -178,8 +247,8 @@ a:hover{ color:#fff; }
   margin: 0 auto 14px;
   border-radius: 999px;
   overflow:hidden;
-  border: 2px solid rgba(255,255,255,.14);
-  box-shadow: 0 18px 45px rgba(0,0,0,.55);
+  border: 2px solid rgba(255,255,255,.16);
+  box-shadow: 0 22px 70px rgba(0,0,0,.65);
 }
 .dash__avatar img{
   width:100%;
@@ -193,12 +262,12 @@ a:hover{ color:#fff; }
   margin: 0 0 8px;
   font-size: 2rem;
   font-weight: 950;
-  letter-spacing: -0.04em;
+  letter-spacing: -0.05em;
 }
 
 .dash__subtitle{
   margin: 0 0 16px;
-  color: rgba(255,255,255,.70);
+  color: rgba(255,255,255,.62);
   font-size: .98rem;
   line-height: 1.5;
 }
@@ -214,15 +283,15 @@ a:hover{ color:#fff; }
   display:inline-flex;
   justify-content:center;
   align-items:center;
-  height: 46px;
+  height: 48px;
   border-radius: 14px;
 
   border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.05);
+  background: rgba(0,0,0,.22);
   color: rgba(255,255,255,.92) !important;
 
   text-decoration:none !important;
-  font-weight: 850;
+  font-weight: 900;
 
   transition: transform .12s ease, background .12s ease, border-color .12s ease;
 }
@@ -237,6 +306,7 @@ a:hover{ color:#fff; }
   background: rgba(255,255,255,.92);
   color: #0b0f14 !important;
   border-color: rgba(255,255,255,.92);
+  box-shadow: 0 14px 40px rgba(255,255,255,.10);
 }
 .dash__btn--primary:hover{ background:#fff; }
 
@@ -275,8 +345,9 @@ a:hover{ color:#fff; }
 /* Headings + muted text in right cards */
 .dash__h2{
   margin: 0 0 .55rem;
-  font-size: 1.15rem;
-  font-weight: 900;
+  font-size: 1.18rem;
+  font-weight: 950;
+  letter-spacing: -0.03em;
 }
 
 .dash__muted{
@@ -292,7 +363,15 @@ a:hover{ color:#fff; }
 }
 .dash__list li{ margin: .45rem 0; }
 
-/* Chips (skills pills) */
+.dash__list a{
+  text-decoration: none !important;
+  border-bottom: 1px solid rgba(255,255,255,.18);
+}
+.dash__list a:hover{
+  border-bottom-color: rgba(255,255,255,.45);
+}
+
+/* Chips */
 .dash__chips{
   display:flex;
   flex-wrap:wrap;
@@ -302,19 +381,19 @@ a:hover{ color:#fff; }
 .dash__chip{
   display:inline-flex;
   align-items:center;
-  padding: .42rem .72rem;
+  padding: .40rem .70rem;
 
   border-radius: 999px;
   border: 1px solid rgba(255,255,255,.14);
 
-  background: rgba(255,255,255,.05);
+  background: rgba(0,0,0,.20);
   color: rgba(255,255,255,.88);
 
   font-weight: 800;
   font-size: .90rem;
 }
 
-/* Make first chip look “active” like reference */
+/* first chip highlighted like reference */
 .dash__chip:first-child{
   background: rgba(255,255,255,.92);
   color: #0b0f14;
@@ -401,154 +480,3 @@ a:hover{ color:#fff; }
   font-size:.85rem;
   opacity:.9;
 }
-
-/* ===== Premium polish overrides (paste at END) ===== */
-
-/* smoother overall */
-body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-
-/* cards: stronger glass + edge highlight */
-.dash__card{
-  background:
-    linear-gradient(180deg, rgba(255,255,255,.085) 0%, rgba(255,255,255,.035) 100%);
-  border-color: rgba(255,255,255,.12);
-  box-shadow: 0 18px 55px rgba(0,0,0,.55);
-  position: relative;
-  overflow: hidden;
-}
-
-/* subtle top highlight line like reference */
-.dash__card::before{
-  content:"";
-  position:absolute;
-  left:0; right:0; top:0;
-  height:1px;
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(255,255,255,.22) 25%,
-    rgba(255,255,255,.08) 70%,
-    transparent 100%);
-  opacity: .9;
-}
-
-/* headings more confident */
-.dash__h2{
-  font-size: 1.18rem;
-  font-weight: 950;
-  letter-spacing: -0.03em;
-}
-
-/* muted text like reference */
-.dash__muted,
-.dash__subtitle{
-  color: rgba(255,255,255,.62) !important;
-}
-
-/* profile name a bit more premium */
-.dash__name{
-  font-weight: 1000;
-  letter-spacing: -0.05em;
-}
-
-/* avatar: stronger ring */
-.dash__avatar{
-  border: 2px solid rgba(255,255,255,.16);
-  box-shadow: 0 22px 70px rgba(0,0,0,.65);
-}
-
-/* buttons: more “product” style */
-.dash__btn{
-  height: 48px;
-  border-radius: 14px;
-  font-weight: 900;
-}
-
-.dash__btn--primary{
-  box-shadow: 0 14px 40px rgba(255,255,255,.10);
-}
-
-/* secondary button darker */
-.dash__btn:not(.dash__btn--primary){
-  background: rgba(0,0,0,.22);
-  border-color: rgba(255,255,255,.12);
-}
-
-/* chips: slightly tighter + nicer */
-.dash__chip{
-  background: rgba(0,0,0,.20);
-  border-color: rgba(255,255,255,.14);
-  padding: .40rem .70rem;
-}
-
-.dash__chip:first-child{
-  background: rgba(255,255,255,.92);
-  color: #0b0f14;
-}
-
-/* featured project links look cleaner */
-.dash__list a{
-  text-decoration: none !important;
-  border-bottom: 1px solid rgba(255,255,255,.18);
-}
-.dash__list a:hover{
-  border-bottom-color: rgba(255,255,255,.45);
-}
-
-/* ===== Center the top nav links like the reference ===== */
-
-/* Keep masthead nicely centered + wide */
-.masthead__inner-wrap {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding-left: 22px;
-  padding-right: 22px;
-}
-
-/* Make the navbar a positioning context */
-.greedy-nav {
-  position: relative;
-}
-
-/* Center the visible links group */
-.greedy-nav .visible-links {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: center;
-  gap: 32px;               /* spacing between menu items */
-  width: max-content;
-}
-
-/* Make sure site title stays on the left */
-.greedy-nav .site-title {
-  margin-right: auto;
-}
-
-/* If you have right-side icons/buttons, keep them on the right */
-.greedy-nav .greedy-nav__toggle,
-.greedy-nav .search__toggle {
-  margin-left: auto;
-}
-
-/* Nav link look (more like the reference) */
-.greedy-nav a {
-  font-weight: 600;
-  opacity: .85;
-}
-.greedy-nav a:hover {
-  opacity: 1;
-}
-
-/* Mobile: don’t force center (Greedy nav collapses) */
-@media (max-width: 900px) {
-  .greedy-nav .visible-links {
-    position: static;
-    transform: none;
-    width: auto;
-    gap: 14px;
-    justify-content: flex-start;
-  }
-}
-
-
