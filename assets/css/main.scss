@@ -603,3 +603,19 @@ a:hover{ color:#fff; }
   font-size:.85rem;
 }
 
+/* ===== Sticky navbar (stays visible while scrolling) ===== */
+.masthead {
+  position: sticky;
+  top: 0;
+  z-index: 9999;
+  background: rgba(9, 12, 18, 0.72);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255,255,255,0.10);
+}
+
+/* remove any gap above content when sticky is enabled */
+.masthead + .initial-content {
+  margin-top: 0 !important;
+}
+
