@@ -826,5 +826,27 @@ a:hover{ color:#fff; }
   }
 }
 
+/* ===== Skills page: shift content slightly LEFT (desktop only) ===== */
+.skills-page .skills-wrap{
+  /* remove auto-centering */
+  margin-left: 0 !important;
+  margin-right: auto !important;
+
+  /* keep it readable (not full-width) */
+  max-width: 1000px;
+
+  /* optional: small left padding so it doesn't hug the edge */
+  padding-left: 8px;
+}
+
+/* Mobile/tablet: keep centered to avoid awkward overflow */
+@media (max-width: 980px){
+  .skills-page .skills-wrap{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100%;
+    padding-left: 0;
+  }
+}
 
 
