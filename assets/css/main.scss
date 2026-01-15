@@ -849,9 +849,30 @@ a:hover{ color:#fff; }
   }
 }
 
-/* DEBUG: if you see a red outline, CSS is applying */
-.skills-page .skills-wrap{
-  outline: 3px solid red !important;
+/* =========================
+   DEBUG — PROVE main.scss is actually loading
+   ========================= */
+
+/* Big obvious badge */
+body::after{
+  content: "MAIN.SCSS LOADED";
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 999999;
+  padding: 10px 12px;
+  border-radius: 10px;
+  font-weight: 900;
+  font-size: 14px;
+  letter-spacing: .02em;
+  color: #111;
+  background: #fff;
+  box-shadow: 0 12px 35px rgba(0,0,0,.55);
+}
+
+/* Also outline the skills block no matter what page */
+.skills-wrap{
+  outline: 4px solid red !important;
 }
 
 
