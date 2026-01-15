@@ -849,4 +849,10 @@ a:hover{ color:#fff; }
   }
 }
 
+/* DEBUG: if you see a red outline, CSS is applying */
+.skills-page .skills-wrap{
+  outline: 3px solid red !important;
+}
+
+
 
