@@ -1,13 +1,13 @@
 ---
 layout: single
 permalink: /skills/
-title: "Skills"
+title: ""
 classes: wide skills-page
 ---
 
 <div class="skills-wrap">
 
-  <h1 class="skills-title">Skills & Technologies</h1>
+  <h1 class="skills-title">Skills &amp; Technologies</h1>
 
   <!-- CORE STACK -->
   <section class="skills-card">
@@ -94,7 +94,7 @@ classes: wide skills-page
   </section>
 
   <!-- OTHER TOOLS -->
-  <section class="skills-card" style="margin-top:18px;">
+  <section class="skills-card skills-card--spaced">
     <div class="skills-card__head">
       <div>
         <h2>Other Technologies</h2>
@@ -138,28 +138,28 @@ classes: wide skills-page
   </section>
 
   <!-- ANALYTICS & METHODS -->
-  <section class="skills-card" style="margin-top:18px;">
+  <section class="skills-card skills-card--spaced">
     <div class="skills-card__head">
       <div>
-        <h2>Analytics & Methods</h2>
+        <h2>Analytics &amp; Methods</h2>
         <p>What I do with the tools</p>
       </div>
     </div>
 
     <div class="skills-pills">
-      <span class="pillx">Data Cleaning & Preprocessing</span>
+      <span class="pillx">Data Cleaning &amp; Preprocessing</span>
       <span class="pillx">EDA</span>
-      <span class="pillx">Data Visualization & Storytelling</span>
+      <span class="pillx">Data Visualization &amp; Storytelling</span>
       <span class="pillx">Hypothesis Testing</span>
       <span class="pillx">A/B Testing</span>
-      <span class="pillx">Clustering & Segmentation</span>
+      <span class="pillx">Clustering &amp; Segmentation</span>
       <span class="pillx">PCA / Dimensionality Reduction</span>
       <span class="pillx">Market Basket Analysis</span>
       <span class="pillx">Time Series Forecasting</span>
       <span class="pillx">Statistical Modeling</span>
       <span class="pillx">ML: Regression</span>
       <span class="pillx">ML: Classification</span>
-      <span class="pillx">Ensemble & Tree-based Models</span>
+      <span class="pillx">Ensemble &amp; Tree-based Models</span>
       <span class="pillx">Model Evaluation</span>
       <span class="pillx">Text Mining / NLP (Foundational)</span>
     </div>
