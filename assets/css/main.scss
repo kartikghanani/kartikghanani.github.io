@@ -97,7 +97,7 @@ a:hover{ color:#fff; }
   backdrop-filter: blur(10px);
 }
 
-/* Remove left title */
+/* Remove left title ("Kartik Ghanani") */
 .masthead .site-title{
   display: none !important;
 }
@@ -163,7 +163,9 @@ a:hover{ color:#fff; }
 }
 
 /* =========================================================
-   DASHBOARD (Home)
+   DASHBOARD (Home) — the cards layout you built
+   Uses your layout HTML:
+   .dash -> .dash__grid -> (.dash__left + .dash__right)
    ========================================================= */
 .dash{
   max-width: 1280px;
@@ -437,6 +439,170 @@ a:hover{ color:#fff; }
   opacity:.9;
 }
 
+
+/* =========================
+   NAVBAR — force reference look
+   ========================= */
+
+/* Kill ALL possible title elements (theme variants) */
+.masthead__menu .site-title,
+.masthead__menu .site-title-wrap,
+.masthead__menu .site-logo,
+.masthead__menu .site-title__text,
+.masthead__menu .site-title a,
+.greedy-nav .site-title,
+.greedy-nav .site-title a,
+.greedy-nav .site-logo,
+.masthead .site-title,
+.masthead .site-title a {
+  display: none !important;
+}
+
+/* Remove hamburger / greedy toggle everywhere */
+.greedy-nav__toggle,
+.greedy-nav .greedy-nav__toggle,
+.masthead__menu .greedy-nav__toggle {
+  display: none !important;
+}
+
+/* Remove search icon if it exists */
+.search__toggle,
+.greedy-nav .search__toggle,
+.masthead__menu .search__toggle {
+  display: none !important;
+}
+
+/* Make navbar a true centered row */
+.masthead__menu .greedy-nav {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Center the links group */
+.masthead__menu .greedy-nav .visible-links {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 34px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  float: none !important;
+  position: static !important;
+  transform: none !important;
+}
+
+/* Make sure no left/right blocks push layout */
+.masthead__menu .greedy-nav > ul,
+.masthead__menu .greedy-nav > .navicon,
+.masthead__menu .greedy-nav > .search__toggle {
+  margin: 0 !important;
+}
+
+/* Nav styling like reference */
+.masthead__menu .greedy-nav a {
+  font-weight: 600 !important;
+  opacity: .88 !important;
+  padding: 0.95rem 0.2rem !important;
+}
+.masthead__menu .greedy-nav a:hover {
+  opacity: 1 !important;
+}
+
+/* Mobile: allow wrap (don’t break layout) */
+@media (max-width: 900px) {
+  .masthead__menu .greedy-nav {
+    justify-content: center !important;
+  }
+  .masthead__menu .greedy-nav .visible-links {
+    gap: 14px !important;
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+  }
+}
+
+/* ===== Featured Projects (card grid like reference) ===== */
+.dash__row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:14px;
+}
+.dash__more{
+  font-weight:700;
+  font-size:.95rem;
+  color: rgba(255,255,255,.70) !important;
+  text-decoration:none !important;
+}
+.dash__more:hover{ color:#fff !important; }
+
+.projgrid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap:16px;
+}
+@media (max-width: 900px){
+  .projgrid{ grid-template-columns: 1fr; }
+}
+
+.projcard{
+  display:block;
+  padding:18px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.07) 0%, rgba(255,255,255,.035) 100%);
+  box-shadow: 0 14px 40px rgba(0,0,0,.45);
+  text-decoration:none !important;
+  transition: transform .14s ease, border-color .14s ease, background .14s ease;
+}
+.projcard:hover{
+  transform: translateY(-2px);
+  border-color: rgba(255,255,255,.18);
+  background: linear-gradient(180deg, rgba(255,255,255,.085) 0%, rgba(255,255,255,.04) 100%);
+}
+
+.projcard__top{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:14px;
+  margin-bottom:10px;
+}
+.projcard__title{
+  font-size:1.18rem;
+  font-weight:900;
+  letter-spacing:-0.03em;
+}
+.projcard__link{
+  font-weight:700;
+  font-size:.92rem;
+  color: rgba(255,255,255,.60);
+  white-space:nowrap;
+}
+.projcard__desc{
+  color: rgba(255,255,255,.68);
+  line-height:1.55;
+  margin: 6px 0 14px;
+}
+
+.projcard__tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+}
+.projtag{
+  display:inline-flex;
+  align-items:center;
+  padding: .35rem .65rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.22);
+  color: rgba(255,255,255,.82);
+  font-weight:800;
+  font-size:.85rem;
+}
+
 /* ===== Sticky navbar (stays visible while scrolling) ===== */
 .masthead {
   position: sticky;
@@ -448,13 +614,14 @@ a:hover{ color:#fff; }
   border-bottom: 1px solid rgba(255,255,255,0.10);
 }
 
+/* remove any gap above content when sticky is enabled */
 .masthead + .initial-content {
   margin-top: 0 !important;
 }
 
-/* =========================================================
+/* =========================
    SKILLS PAGE (reference style)
-   ========================================================= */
+   ========================= */
 .skills-wrap{
   max-width: 1280px;
   margin: 0 auto;
@@ -462,7 +629,7 @@ a:hover{ color:#fff; }
 }
 
 .skills-title{
-  font-size: 2.6rem; /* bigger like reference */
+  font-size: 2.2rem;
   font-weight: 950;
   letter-spacing: -0.03em;
   margin: 0 0 1.2rem;
@@ -546,6 +713,14 @@ a:hover{ color:#fff; }
   flex: 0 0 auto;
 }
 
+.skill-icon img{
+  width: 26px;
+  height: 26px;
+  object-fit: contain;
+  display:block;
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,.35));
+}
+
 .skill-text{ min-width: 0; }
 
 .skill-name{
@@ -559,6 +734,12 @@ a:hover{ color:#fff; }
   font-size: .9rem;
   color: rgba(255,255,255,.62);
   line-height: 1.35;
+}
+
+/* Skills page: ensure truly centered and wide */
+.page__content .skills-wrap{
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
 /* Make "Core Stack" items pop */
@@ -592,39 +773,83 @@ a:hover{ color:#fff; }
   font-size: .92rem;
 }
 
-/* Remove extra “Skills” above */
+/* =========================
+   Skills page polish
+   ========================= */
 .skills-page .page__title,
 .skills-page .page__meta,
 .skills-page .page__lead {
-  display: none !important;
+  display: none !important; /* removes the extra “Skills” above */
+}
+
+/* Make your on-page heading match the reference */
+.skills-page .page__content h1 {
+  font-size: 2.6rem;
+  font-weight: 950;
+  letter-spacing: -0.03em;
+  margin-top: 0;
+  margin-bottom: 1.2rem;
+}
+
+/* Make section headings stronger */
+.skills-page .page__content h2 {
+  font-size: 1.25rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+}
+
+/* Shift the whole content slightly left on wide screens (like the reference feel) */
+@media (min-width: 1100px) {
+  .skills-page .page__inner-wrap {
+    transform: translateX(-50px);
+  }
 }
 
 /* =========================
-   Skills page alignment (CLEAN)
-   - shift a bit left on desktop
+   Skills page: align content like the reference
    ========================= */
-.skills-page .page__inner-wrap{
+
+/* Keep the overall site wide */
+.skills-page .initial-content,
+.skills-page .page__inner-wrap {
   max-width: 1280px !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
 }
 
-/* Desktop: align slightly left like reference */
-.skills-page .skills-wrap{
-  max-width: 1120px;
-  margin-left: 0 !important;
-  margin-right: auto !important;
-  padding-left: 22px;
-  padding-right: 22px;
-}
-
-/* Mobile/tablet: keep centered */
-@media (max-width: 980px){
-  .skills-page .skills-wrap{
-    max-width: 100%;
-    margin-left: auto !important;
-    margin-right: auto !important;
-    padding-left: 18px;
-    padding-right: 18px;
+/* On desktop, make the main Skills content sit a bit left (not perfectly centered) */
+@media (min-width: 1100px) {
+  .skills-page .page__inner-wrap {
+    max-width: 1100px !important;   /* content width */
+    margin-left: 0 !important;       /* push to left */
+    margin-right: auto !important;   /* keep space on right */
+    padding-left: 22px !important;   /* match navbar padding */
+    padding-right: 22px !important;
   }
 }
+
+/* ===== Skills page: shift content slightly LEFT (desktop only) ===== */
+.skills-page .skills-wrap{
+  /* remove auto-centering */
+  margin-left: 0 !important;
+  margin-right: auto !important;
+
+  /* keep it readable (not full-width) */
+  max-width: 1000px;
+
+  /* optional: small left padding so it doesn't hug the edge */
+  padding-left: 8px;
+}
+
+/* Mobile/tablet: keep centered to avoid awkward overflow */
+@media (max-width: 980px){
+  .skills-page .skills-wrap{
+    margin-left: auto !important;
+    margin-right: auto !important;
+    max-width: 100%;
+    padding-left: 0;
+  }
+}
+
+
+
+
+
